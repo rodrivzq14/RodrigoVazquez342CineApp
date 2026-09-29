@@ -1,0 +1,13 @@
+<nav class="nav">
+  <a routerLink="/" class="logo">🎬 CINE</a>
+
+  <div class="links">
+    @if (auth.profile(); as p) {
+      <a routerLink="/perfil">{{ p.nombre }}</a>
+      <button type="button" class="salir" (click)="salir()">Salir</button>
+    } @else {
+      <a routerLink="/login">Ingresar</a>
+      <a routerLink="/registro" class="registro">Registrarme</a>
+    }
+  </div>
+</nav>

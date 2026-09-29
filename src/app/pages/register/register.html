@@ -1,0 +1,76 @@
+<main class="wrap">
+  <form class="card" [formGroup]="form" (ngSubmit)="enviar()">
+    <h1>Crear cuenta</h1>
+    <p class="promo">🎟️ Registrate y llevate un cupón en tu primera compra</p>
+
+    @if (error()) {
+      <div class="error-box">{{ error() }}</div>
+    }
+
+    <div class="row">
+      <div class="field">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" formControlName="nombre"
+               [class.invalid]="form.controls.nombre.touched && form.controls.nombre.invalid" />
+      </div>
+      <div class="field">
+        <label for="apellido">Apellido</label>
+        <input id="apellido" formControlName="apellido"
+               [class.invalid]="form.controls.apellido.touched && form.controls.apellido.invalid" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email"
+             [class.invalid]="form.controls.email.touched && form.controls.email.invalid" />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <span class="error-msg">Ingresá un email válido</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="password">Contraseña (mínimo 6)</label>
+      <input id="password" type="password" formControlName="password"
+             [class.invalid]="form.controls.password.touched && form.controls.password.invalid" />
+    </div>
+
+    <div class="field">
+      <label for="fecha">Fecha de nacimiento</label>
+      <input id="fecha" type="date" formControlName="fecha_nacimiento"
+             [class.invalid]="form.controls.fecha_nacimiento.touched && form.controls.fecha_nacimiento.invalid" />
+      @if (form.controls.fecha_nacimiento.errors?.['edadInvalida']) {
+        <span class="error-msg">Fecha inválida</span>
+      }
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="sangre">Tipo de sangre</label>
+        <select id="sangre" formControlName="tipo_sangre"
+                [class.invalid]="form.controls.tipo_sangre.touched && form.controls.tipo_sangre.invalid">
+          <option value="" disabled>Elegí</option>
+          @for (s of sangres; track s) {
+            <option [value]="s">{{ s }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label for="ojos">Color de ojos</label>
+        <input id="ojos" formControlName="color_ojos"
+               [class.invalid]="form.controls.color_ojos.touched && form.controls.color_ojos.invalid" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="vac">Días de vacaciones por año</label>
+      <input id="vac" type="number" min="0" max="365" formControlName="dias_vacaciones" />
+    </div>
+
+    <button class="btn" type="submit" [disabled]="enviando()">
+      {{ enviando() ? 'Creando...' : 'Registrarme' }}
+    </button>
+
+    <p class="alt">¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a></p>
+  </form>
+</main>
