@@ -1,0 +1,29 @@
+.page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.hero h1 { font-size: 3.4rem; color: var(--accent); line-height: 1; }
+.hero p { color: var(--muted); margin: .4rem 0 1.5rem; }
+
+.filtros { margin-bottom: 2rem; }
+.filtros input { width: 100%; max-width: 420px; margin-bottom: 1rem; }
+
+.chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+.chip {
+  background: var(--surface-2); color: var(--text); border: 1px solid transparent;
+  border-radius: 999px; padding: .4rem 1rem; cursor: pointer; font: inherit;
+  transition: background .15s, transform .15s;
+}
+.chip:hover { transform: translateY(-2px); }
+.chip.activo { background: var(--accent); color: #1a1206; font-weight: 700; }
+.chip.limpiar { background: transparent; border-color: var(--muted); color: var(--muted); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.5rem; }
+.pelicula h3 { font-size: 1.4rem; margin: .6rem 0 .1rem; }
+.meta { color: var(--muted); font-size: .85rem; }
+
+.poster { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 2 / 3; background: var(--surface); }
+.poster img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.pelicula:hover .poster img { transform: scale(1.05); }
+.edad { position: absolute; top: .5rem; right: .5rem; background: var(--accent-2); color: white; font-weight: 700; font-size: .8rem; padding: .2rem .5rem; border-radius: 6px; }
+
+.estado { color: var(--muted); grid-column: 1 / -1; padding: 2rem 0; }
+
+.pelicula { text-decoration: none; color: inherit; display: block; }

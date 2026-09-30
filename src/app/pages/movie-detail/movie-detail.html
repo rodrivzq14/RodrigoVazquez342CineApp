@@ -1,0 +1,59 @@
+<main class="page">
+  @if (cargando()) {
+    <p class="estado">Cargando...</p>
+  } @else if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  } @else if (movie(); as m) {
+    <a routerLink="/" class="volver">← Volver a la cartelera</a>
+
+    <section class="ficha">
+      <img [src]="m.poster_url" [alt]="'Póster de ' + m.titulo" />
+
+      <div class="info">
+        <h1>{{ m.titulo }}</h1>
+        <p class="meta">
+          {{ m.duracion_min }} min ·
+          @for (g of m.generos; track g.id; let ultimo = $last) {
+            {{ g.nombre }}{{ ultimo ? '' : ', ' }}
+          }
+        </p>
+        @if (m.edad_minima > 0) {
+          <p class="aviso">
+            Apta para mayores de {{ m.edad_minima }} años. Los menores deben ir acompañados por un adulto.
+          </p>
+        }
+        <p class="sinopsis">{{ m.sinopsis }}</p>
+      </div>
+    </section>
+
+    <section class="funciones">
+      <h2>Funciones</h2>
+
+      @if (dias().length === 0) {
+        <p class="estado">Todavía no hay funciones programadas para esta película.</p>
+      } @else {
+        <div class="dias">
+          @for (d of dias(); track d.key) {
+            <button type="button" class="chip"
+                    [class.activo]="diaActivo()?.key === d.key"
+                    (click)="diaElegido.set(d.key)">
+              {{ d.label }}
+            </button>
+          }
+        </div>
+
+        <div class="horarios">
+          @for (f of diaActivo()!.funciones; track f.id) {
+            <a class="funcion" [routerLink]="['/funcion', f.id]">
+              <strong>{{ hora(f.starts_at) }}</strong>
+              <span>{{ f.formato }} · {{ f.idioma }}</span>
+              <small>{{ f.sala }}</small>
+            </a>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Acá van después las reseñas y el promedio de estrellas -->
+  }
+</main>

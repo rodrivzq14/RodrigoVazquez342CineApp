@@ -1,1 +1,52 @@
-<p>catalog works!</p>
+<main class="page">
+  <header class="hero">
+    <h1>Cartelera</h1>
+    <p>Elegí tu película y reservá tus butacas</p>
+  </header>
+
+  <section class="filtros">
+    <input #q type="search" placeholder="Buscar por título..."
+           [value]="texto()" (input)="texto.set(q.value)" />
+
+    <div class="chips">
+      @for (g of genres(); track g.id) {
+        <button type="button" class="chip"
+                [class.activo]="generosElegidos().has(g.id)"
+                (click)="toggleGenero(g.id)">
+          {{ g.nombre }}
+        </button>
+      }
+      @if (texto() || generosElegidos().size) {
+        <button type="button" class="chip limpiar" (click)="limpiar()">Limpiar</button>
+      }
+    </div>
+  </section>
+
+  @if (cargando()) {
+    <p class="estado">Cargando cartelera...</p>
+  } @else if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  } @else {
+    <section class="grid">
+      @for (m of filtradas(); track m.id) {
+        <a class="pelicula" [routerLink]="['/pelicula', m.id]">
+          <div class="poster">
+            <img [src]="m.poster_url" [alt]="'Póster de ' + m.titulo" loading="lazy" />
+            @if (m.edad_minima > 0) {
+              <span class="edad">+{{ m.edad_minima }}</span>
+            }
+          </div>
+          <h3>{{ m.titulo }}</h3>
+          <p class="meta">
+            {{ m.duracion_min }} min ·
+            @for (g of m.generos; track g.id; let ultimo = $last) {
+              {{ g.nombre }}{{ ultimo ? '' : ', ' }}
+            }
+          </p>
+        </a>
+      } @empty {
+        <p class="estado">No hay películas que coincidan con tu búsqueda.</p>
+      }
+    </section>
+  }
+</main>

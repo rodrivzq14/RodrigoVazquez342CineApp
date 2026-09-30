@@ -10,5 +10,9 @@ export const routes: Routes = [
     canMatch: [authGuard],
     loadComponent: () => import('./pages/profile-page/profile-page').then(m => m.ProfilePage),
   },
+  {
+    path: 'pelicula/:id',
+    loadComponent: () => import('./pages/movie-detail/movie-detail').then(m => m.MovieDetail),
+  },
   { path: '**', redirectTo: '' },
 ];
