@@ -1,0 +1,7 @@
+.encabezado { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+h1 { font-size: 2.4rem; color: var(--accent); }
+.chips { margin-bottom: 1.2rem; }
+.fecha { white-space: nowrap; color: var(--muted); font-size: .9rem; }
+.accion { background: var(--surface-2); padding: .2rem .6rem; border-radius: 6px; font-size: .85rem; white-space: nowrap; }
+.detalle { color: var(--muted); }
+.estado { color: var(--muted); }

@@ -1,0 +1,14 @@
+<div class="admin">
+  <aside class="menu">
+    <h2>Administración</h2>
+    <nav>
+      @for (s of secciones; track s.ruta) {
+        <a [routerLink]="s.ruta" routerLinkActive="activo">{{ s.nombre }}</a>
+      }
+    </nav>
+  </aside>
+
+  <section class="contenido">
+    <router-outlet />
+  </section>
+</div>

@@ -1,0 +1,65 @@
+<h1>Precios y cupones</h1>
+<p class="ayuda">Los cambios se aplican a las compras nuevas y quedan registrados en Actividad.</p>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+@if (mensaje()) {
+  <div class="ok-box">{{ mensaje() }}</div>
+}
+
+<div class="layout">
+  <form class="card" [formGroup]="precios" (ngSubmit)="guardarPrecios()">
+    <h2>Precios</h2>
+
+    @for (clave of claves(); track clave) {
+      <div class="field">
+        <label [for]="clave">{{ etiqueta(clave) }}</label>
+        <input [id]="clave" type="number" min="0" [formControlName]="clave"
+               [class.invalid]="precios.controls[clave].touched && precios.controls[clave].invalid" />
+      </div>
+    } @empty {
+      <p class="ayuda">Cargando...</p>
+    }
+
+    <button type="submit" class="btn" [disabled]="guardando()">Guardar precios</button>
+  </form>
+
+  <section class="card">
+    <h2>Cupones</h2>
+
+    @for (grupo of cupones.controls; track grupo.controls.id.value) {
+      <form class="cupon" [formGroup]="grupo" (ngSubmit)="guardarCupon(grupo)">
+        <strong>{{ nombreTipo(grupo.controls.tipo.value) }}</strong>
+        <div class="porcentaje">
+          <input type="number" min="1" max="100" formControlName="porcentaje" aria-label="Porcentaje"
+                 [class.invalid]="grupo.controls.porcentaje.invalid" />
+          <span>%</span>
+        </div>
+        <label class="check">
+          <input type="checkbox" formControlName="activo" /> Activo
+        </label>
+        <button type="submit" class="btn-chico" [disabled]="grupo.pristine || guardando()">Guardar</button>
+      </form>
+    } @empty {
+      <p class="ayuda">No hay cupones cargados.</p>
+    }
+
+    <form class="nuevo" [formGroup]="nuevoCupon" (ngSubmit)="crearCupon()">
+      <h3>Nuevo cupón</h3>
+      <div class="cupon">
+        <select formControlName="tipo" aria-label="Tipo de cupón">
+          @for (t of tiposCupon; track t.valor) {
+            <option [ngValue]="t.valor">{{ t.nombre }}</option>
+          }
+        </select>
+        <div class="porcentaje">
+          <input type="number" min="1" max="100" formControlName="porcentaje" aria-label="Porcentaje"
+                 [class.invalid]="nuevoCupon.controls.porcentaje.touched && nuevoCupon.controls.porcentaje.invalid" />
+          <span>%</span>
+        </div>
+        <button type="submit" class="btn-chico" [disabled]="guardando()">Crear</button>
+      </div>
+    </form>
+  </section>
+</div>

@@ -14,3 +14,6 @@ export interface Movie {
   activa: boolean;
   generos: Genre[];
 }
+
+// Lo que se manda al insertar/editar (sin id ni géneros)
+export type MovieInput = Omit<Movie, 'id' | 'generos'>;

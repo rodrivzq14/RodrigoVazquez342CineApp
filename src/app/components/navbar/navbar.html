@@ -2,6 +2,9 @@
   <a routerLink="/" class="logo">🎬 CINE</a>
 
   <div class="links">
+    <a *appSiRol="['empleado', 'admin']" routerLink="/validar">Validar QR</a>
+    <a *appSiRol="['admin']" routerLink="/admin">Admin</a>
+
     @if (auth.profile(); as p) {
       <a routerLink="/perfil">{{ p.nombre }}</a>
       <button type="button" class="salir" (click)="salir()">Salir</button>

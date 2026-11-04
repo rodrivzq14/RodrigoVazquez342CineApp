@@ -1,0 +1,8 @@
+h2 { font-size: 1.8rem; color: var(--accent); margin-bottom: 1rem; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: end; }
+textarea { resize: vertical; }
+.preview { width: 110px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 10px; margin-bottom: 1rem; }
+.check { display: flex; align-items: center; gap: .5rem; margin-bottom: 1.6rem; cursor: pointer; }
+.label { font-size: .85rem; color: var(--muted); margin-bottom: .4rem; }
+.acciones { display: flex; gap: .8rem; margin-top: 1.5rem; }
+@media (max-width: 560px) { .row { grid-template-columns: 1fr; } }

@@ -1,0 +1,21 @@
+h1 { font-size: 2.4rem; color: var(--accent); margin-bottom: 1.2rem; }
+h2 { font-size: 1.6rem; margin-bottom: .4rem; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.5rem; align-items: start; }
+.card { padding: 1.5rem; }
+
+.ayuda { color: var(--muted); font-size: .9rem; margin-bottom: 1rem; }
+.label { font-size: .85rem; color: var(--muted); margin: 1rem 0 .4rem; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: .6rem; }
+.horas input { padding: .4rem .7rem; }
+.error-msg { display: block; margin-top: .3rem; }
+form .btn { margin-top: 1.2rem; }
+
+.resultado { margin-top: 1rem; }
+.resultado ul { margin: .4rem 0 0; padding-left: 1.2rem; }
+
+.dias { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .5rem; margin: .8rem 0; }
+.dias .chip { white-space: nowrap; }
+.hora { font-family: var(--font-title); font-size: 1.4rem; color: var(--accent); }
+td small { display: block; color: var(--muted); }
+
+@media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }

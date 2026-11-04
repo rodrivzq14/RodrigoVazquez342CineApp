@@ -1,0 +1,44 @@
+<header class="encabezado">
+  <h1>Actividad</h1>
+  <button type="button" class="btn-chico" (click)="cargar()">Actualizar</button>
+</header>
+
+<div class="chips">
+  <button type="button" class="chip" [class.activo]="!filtro()" (click)="filtro.set('')">Todo</button>
+  @for (a of acciones(); track a) {
+    <button type="button" class="chip" [class.activo]="filtro() === a" (click)="filtro.set(a)">{{ a }}</button>
+  }
+</div>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+
+@if (cargando()) {
+  <p class="estado">Cargando...</p>
+} @else {
+  <div class="tabla-scroll">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>Fecha y hora</th>
+          <th>Usuario</th>
+          <th>Acción</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (e of filtradas(); track e.id) {
+          <tr>
+            <td class="fecha">{{ e.created_at | fechaAr }}</td>
+            <td>{{ e.usuario ?? 'Sistema' }}</td>
+            <td><span class="accion">{{ e.accion }}</span></td>
+            <td class="detalle">{{ e.detalle }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="estado">Todavía no hay actividad registrada.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

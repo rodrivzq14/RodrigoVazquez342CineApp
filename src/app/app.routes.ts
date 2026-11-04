@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
+import { roleGuard } from './guards/role-guard';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,16 @@ export const routes: Routes = [
   {
     path: 'confirmacion/:id',
     loadComponent: () => import('./pages/confirmation/confirmation').then(m => m.Confirmation),
+  },
+  {
+    path: 'admin',
+    canMatch: [roleGuard(['admin'])],
+    loadChildren: () => import('./pages/admin/admin.routes').then(m => m.ADMIN_ROUTES),
+  },
+  {
+    path: 'validar',
+    canMatch: [roleGuard(['empleado', 'admin'])],
+    loadComponent: () => import('./pages/validate/validate').then(m => m.Validate),
   },
   { 
     path: '**', 

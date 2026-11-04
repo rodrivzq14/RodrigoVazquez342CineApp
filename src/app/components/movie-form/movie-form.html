@@ -1,0 +1,75 @@
+<form class="card" [formGroup]="form" (ngSubmit)="guardar()">
+  <h2>{{ movie() ? 'Editar película' : 'Nueva película' }}</h2>
+
+  @if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  }
+
+  <div class="field">
+    <label for="titulo">Título</label>
+    <input id="titulo" formControlName="titulo"
+           [class.invalid]="form.controls.titulo.touched && form.controls.titulo.invalid" />
+  </div>
+
+  <div class="field">
+    <label for="sinopsis">Sinopsis</label>
+    <textarea id="sinopsis" rows="4" formControlName="sinopsis"
+              [class.invalid]="form.controls.sinopsis.touched && form.controls.sinopsis.invalid"></textarea>
+  </div>
+
+  <div class="row">
+    <div class="field">
+      <label for="duracion">Duración (minutos)</label>
+      <input id="duracion" type="number" min="30" max="300" formControlName="duracion_min"
+             [class.invalid]="form.controls.duracion_min.touched && form.controls.duracion_min.invalid" />
+    </div>
+    <div class="field">
+      <label for="edad">Restricción de edad</label>
+      <select id="edad" formControlName="edad_minima">
+        <option [ngValue]="0">ATP</option>
+        <option [ngValue]="13">+13</option>
+        <option [ngValue]="18">+18</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label for="poster">URL del póster</label>
+    <input id="poster" formControlName="poster_url" placeholder="https://..."
+           [class.invalid]="form.controls.poster_url.touched && form.controls.poster_url.invalid" />
+    @if (form.controls.poster_url.touched && form.controls.poster_url.errors?.['pattern']) {
+      <span class="error-msg">Tiene que empezar con http:// o https://</span>
+    }
+  </div>
+
+  @if (form.controls.poster_url.valid) {
+    <img class="preview" [src]="form.controls.poster_url.value" alt="Vista previa del póster" />
+  }
+
+  <div class="row">
+    <div class="field">
+      <label for="estreno">Fecha de estreno (opcional)</label>
+      <input id="estreno" type="date" formControlName="fecha_estreno" />
+    </div>
+    <label class="check">
+      <input type="checkbox" formControlName="activa" />
+      Visible en la cartelera
+    </label>
+  </div>
+
+  <p class="label">Géneros</p>
+  <div class="chips">
+    @for (g of generos(); track g.id) {
+      <button type="button" class="chip" [class.activo]="elegidos().has(g.id)" (click)="toggleGenero(g.id)">
+        {{ g.nombre }}
+      </button>
+    }
+  </div>
+
+  <div class="acciones">
+    <button type="button" class="btn secundario" (click)="cancelado.emit()">Cancelar</button>
+    <button type="submit" class="btn" [disabled]="guardando()">
+      {{ guardando() ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</form>

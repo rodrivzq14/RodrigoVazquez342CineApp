@@ -1,0 +1,54 @@
+<main class="page">
+  <h1>Validar entradas</h1>
+
+  <section class="card">
+    <div id="lector" [class.oculto]="!camaraActiva()"></div>
+
+    @if (!camaraActiva()) {
+      <button type="button" class="btn" (click)="prenderCamara()">📷 Escanear QR con la cámara</button>
+    } @else {
+      <button type="button" class="btn secundario" (click)="apagarCamara()">Apagar cámara</button>
+    }
+
+    <form class="manual" [formGroup]="form" (ngSubmit)="validarManual()">
+      <label for="codigo">¿No funciona el lector? Ingresá el código que figura debajo del QR</label>
+      <div class="fila">
+        <input id="codigo" formControlName="codigo" placeholder="Ej: 3f9a1c2b" autocomplete="off"
+               [class.invalid]="form.controls.codigo.touched && form.controls.codigo.invalid" />
+        <button type="submit" class="btn" [disabled]="procesando()">Validar</button>
+      </div>
+      @if (form.controls.codigo.touched && form.controls.codigo.errors?.['minlength']) {
+        <span class="error-msg">El código tiene al menos 8 caracteres</span>
+      }
+    </form>
+  </section>
+
+  @if (procesando()) {
+    <p class="estado">Validando...</p>
+  }
+
+  @if (valida(); as v) {
+    <section class="resultado ok">
+      <span class="icono">✔</span>
+      <h2>Entrada válida</h2>
+      <p class="peli">{{ v.titulo }}</p>
+      <p><strong>{{ v.sala }}</strong> · {{ v.starts_at | fechaAr: 'larga' }}</p>
+      @if (v.tipo === 'vip') {
+        <p class="tag">Butaca VIP</p>
+      }
+      @if (v.edad_minima > 0) {
+        <p class="alerta">Película +{{ v.edad_minima }}: si es menor, debe ingresar con un adulto.</p>
+      }
+      <button type="button" class="btn" (click)="siguiente()">Siguiente</button>
+    </section>
+  }
+
+  @if (error() && !procesando()) {
+    <section class="resultado mal">
+      <span class="icono">✖</span>
+      <h2>No se puede usar</h2>
+      <p>{{ error() }}</p>
+      <button type="button" class="btn" (click)="siguiente()">Siguiente</button>
+    </section>
+  }
+</main>

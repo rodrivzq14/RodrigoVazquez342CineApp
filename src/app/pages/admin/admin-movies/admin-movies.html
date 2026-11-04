@@ -1,0 +1,64 @@
+<header class="encabezado">
+  <h1>Películas</h1>
+  @if (editando() === undefined) {
+    <button type="button" class="btn" (click)="editando.set(null)">+ Nueva película</button>
+  }
+</header>
+
+@if (editando() !== undefined) {
+  <app-movie-form
+    [movie]="editando() ?? null"
+    [generos]="generos()"
+    (guardado)="alGuardar()"
+    (cancelado)="editando.set(undefined)" />
+}
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+
+@if (cargando()) {
+  <p class="estado">Cargando...</p>
+} @else {
+  <input #q type="search" class="buscar" placeholder="Buscar película..." (input)="texto.set(q.value)" />
+
+  <div class="tabla-scroll">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Título</th>
+          <th>Duración</th>
+          <th>Edad</th>
+          <th>Géneros</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (m of filtradas(); track m.id) {
+          <tr [class.inactiva]="!m.activa">
+            <td><img [src]="m.poster_url" alt="" class="mini" /></td>
+            <td><strong>{{ m.titulo }}</strong></td>
+            <td>{{ m.duracion_min }} min</td>
+            <td>{{ m.edad_minima > 0 ? '+' + m.edad_minima : 'ATP' }}</td>
+            <td class="generos">{{ nombresGeneros(m) }}</td>
+            <td>
+              <span class="estado-tag" [class.on]="m.activa">{{ m.activa ? 'En cartelera' : 'Oculta' }}</span>
+            </td>
+            <td class="acciones">
+              <div>
+                <button type="button" class="btn-chico" (click)="editando.set(m)">Editar</button>
+                <button type="button" class="btn-chico" (click)="toggleActiva(m)">
+                  {{ m.activa ? 'Ocultar' : 'Mostrar' }}
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7" class="estado">No hay películas.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

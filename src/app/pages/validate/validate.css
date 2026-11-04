@@ -1,0 +1,26 @@
+.page { max-width: 560px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+h1 { font-size: 2.6rem; color: var(--accent); margin-bottom: 1rem; }
+.card { padding: 1.5rem; }
+
+#lector { border-radius: var(--radius); overflow: hidden; margin-bottom: 1rem; }
+#lector.oculto { display: none; }
+
+.manual { margin-top: 1.5rem; }
+.manual label { display: block; font-size: .85rem; color: var(--muted); margin-bottom: .4rem; }
+.fila { display: flex; gap: .6rem; }
+.fila input { flex: 1; min-width: 0; text-transform: lowercase; letter-spacing: 1px; }
+.fila .btn { width: auto; }
+
+.estado { color: var(--muted); margin-top: 1rem; }
+
+/* Bien grande para que el empleado lo vea de un vistazo */
+.resultado { margin-top: 1.5rem; border-radius: var(--radius); padding: 1.5rem; text-align: center; }
+.resultado.ok { background: rgba(76, 175, 125, .15); border: 2px solid var(--ok); }
+.resultado.mal { background: rgba(200, 50, 60, .15); border: 2px solid var(--accent-2); }
+.resultado h2 { font-size: 2rem; margin: .3rem 0 .6rem; }
+.resultado p { margin-bottom: .4rem; }
+.resultado .btn { margin-top: 1rem; }
+.icono { font-size: 3rem; line-height: 1; }
+.peli { font-family: var(--font-title); font-size: 1.6rem; letter-spacing: 1px; }
+.tag { color: #c084fc; font-weight: 700; }
+.alerta { background: rgba(232, 176, 74, .15); color: var(--accent); padding: .5rem; border-radius: 8px; font-size: .9rem; }

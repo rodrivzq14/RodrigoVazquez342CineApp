@@ -1,0 +1,17 @@
+h1 { font-size: 2.4rem; color: var(--accent); margin-bottom: .4rem; }
+h2 { font-size: 1.6rem; margin-bottom: 1rem; }
+h3 { font-size: 1.2rem; color: var(--muted); margin-bottom: .6rem; }
+.ayuda { color: var(--muted); font-size: .9rem; margin-bottom: 1.2rem; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 1.5rem; align-items: start; }
+.card { padding: 1.5rem; }
+
+.cupon { display: flex; align-items: center; gap: .8rem; padding: .6rem 0; border-bottom: 1px solid var(--surface-2); flex-wrap: wrap; }
+.cupon strong { flex: 1; min-width: 140px; }
+.porcentaje { display: flex; align-items: center; gap: .3rem; }
+.porcentaje input { width: 80px; padding: .5rem; }
+.check { display: flex; align-items: center; gap: .4rem; cursor: pointer; }
+.nuevo { margin-top: 1.5rem; }
+.nuevo .cupon { border-bottom: 0; }
+.nuevo select { flex: 1; min-width: 160px; }
+
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }

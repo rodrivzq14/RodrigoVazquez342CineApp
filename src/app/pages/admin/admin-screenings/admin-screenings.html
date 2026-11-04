@@ -1,0 +1,148 @@
+<h1>Funciones</h1>
+
+<div class="layout">
+  <form class="card" [formGroup]="form" (ngSubmit)="crear()">
+    <h2>Programar funciones</h2>
+    <p class="ayuda">La sala se asigna sola: el sistema busca una que esté libre, dejando 30 minutos de limpieza entre funciones.</p>
+
+    <div class="field">
+      <label for="pelicula">Película</label>
+      <select id="pelicula" formControlName="movie_id"
+              [class.invalid]="form.controls.movie_id.touched && form.controls.movie_id.invalid">
+        <option [ngValue]="0" disabled>Elegí una película</option>
+        @for (m of movies(); track m.id) {
+          <option [ngValue]="m.id">{{ m.titulo }} ({{ m.duracion_min }} min)</option>
+        }
+      </select>
+    </div>
+
+    <p class="label">Días de la semana</p>
+    <div class="chips">
+      @for (d of diasSemana; track d.n) {
+        <button type="button" class="chip" [class.activo]="form.controls.dias.value.includes(d.n)" (click)="toggleDia(d.n)">
+          {{ d.nombre }}
+        </button>
+      }
+    </div>
+    @if (form.controls.dias.touched && form.controls.dias.invalid) {
+      <span class="error-msg">Elegí al menos un día</span>
+    }
+
+    <p class="label">Horario</p>
+    <div class="chips horas">
+      @for (h of horasRapidas; track h) {
+        <button type="button" class="chip" [class.activo]="form.controls.hora.value === h" (click)="form.controls.hora.setValue(h)">
+          {{ h }}
+        </button>
+      }
+      <input type="time" formControlName="hora" aria-label="Otro horario" />
+    </div>
+
+    <p class="label">Período</p>
+    <div class="chips">
+      @for (s of semanas; track s) {
+        <button type="button" class="chip" (click)="elegirSemanas(s)">{{ s }} {{ s === 1 ? 'semana' : 'semanas' }}</button>
+      }
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="desde">Desde</label>
+        <input id="desde" type="date" formControlName="desde" />
+      </div>
+      <div class="field">
+        <label for="hasta">Hasta</label>
+        <input id="hasta" type="date" formControlName="hasta" [class.invalid]="form.hasError('rango')" />
+      </div>
+    </div>
+    @if (form.hasError('rango')) {
+      <span class="error-msg">"Hasta" tiene que ser después de "desde"</span>
+    }
+
+    <div class="row">
+      <div>
+        <p class="label">Formato</p>
+        <div class="chips">
+          @for (f of formatos; track f) {
+            <button type="button" class="chip" [class.activo]="form.controls.formato.value === f" (click)="form.controls.formato.setValue(f)">{{ f }}</button>
+          }
+        </div>
+      </div>
+      <div>
+        <p class="label">Idioma</p>
+        <div class="chips">
+          @for (i of idiomas; track i) {
+            <button type="button" class="chip" [class.activo]="form.controls.idioma.value === i" (click)="form.controls.idioma.setValue(i)">{{ i }}</button>
+          }
+        </div>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="error-box">{{ error() }}</div>
+    }
+
+    <button type="submit" class="btn" [disabled]="guardando() || cantidad() === 0">
+      {{ guardando() ? 'Asignando salas...' : 'Crear ' + cantidad() + ' función(es)' }}
+    </button>
+
+    @if (resultado(); as r) {
+      <div class="resultado">
+        @if (r.creadas.length) {
+          <div class="ok-box">
+            Se crearon {{ r.creadas.length }} función(es):
+            <ul>
+              @for (c of r.creadas; track c.fecha) {
+                <li>{{ c.fecha | fechaAr: 'dia' }} {{ form.controls.hora.value }} → {{ nombreSala(c.sala) }}</li>
+              }
+            </ul>
+          </div>
+        }
+        @if (r.sin_sala.length) {
+          <div class="error-box">
+            No había ninguna sala libre para:
+            <ul>
+              @for (s of r.sin_sala; track s) {
+                <li>{{ s | fechaAr: 'dia' }} {{ form.controls.hora.value }}</li>
+              }
+            </ul>
+          </div>
+        }
+        @if (!r.creadas.length && !r.sin_sala.length) {
+          <p class="ayuda">No se creó nada: esas funciones ya existían.</p>
+        }
+      </div>
+    }
+  </form>
+
+  <section class="card">
+    <h2>Próximas funciones</h2>
+
+    @if (dias().length === 0) {
+      <p class="ayuda">No hay funciones programadas.</p>
+    } @else {
+      <div class="chips dias">
+        @for (d of dias(); track d.key) {
+          <button type="button" class="chip" [class.activo]="diaActivo()?.key === d.key" (click)="diaElegido.set(d.key)">
+            {{ d.funciones[0].starts_at | fechaAr: 'dia' }}
+          </button>
+        }
+      </div>
+
+      <table class="tabla">
+        <tbody>
+          @for (f of diaActivo()!.funciones; track f.id) {
+            <tr>
+              <td class="hora">{{ f.starts_at | fechaAr: 'hora' }}</td>
+              <td>
+                <strong>{{ f.titulo }}</strong>
+                <small>{{ f.formato }} · {{ f.idioma }}</small>
+              </td>
+              <td>{{ f.sala }}</td>
+              <td><button type="button" class="btn-chico peligro" (click)="eliminar(f)">Eliminar</button></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </section>
+</div>
