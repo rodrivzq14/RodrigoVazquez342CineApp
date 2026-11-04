@@ -1,0 +1,51 @@
+<main class="page">
+  @if (cargando()) {
+    <p class="estado">Cargando tu compra...</p>
+  } @else if (error()) {
+    <div class="error-box">{{ error() }}</div>
+    <a routerLink="/" class="volver">← Ir a la cartelera</a>
+  } @else if (orden(); as o) {
+    <header class="exito">
+      <h1>¡Compra confirmada!</h1>
+      <p>Orden #{{ o.order_id }} · Total {{ o.total | currency: 'ARS' : '$' : '1.0-0' }}</p>
+      @if (o.descuento > 0) {
+        <p class="ahorro">Ahorraste {{ o.descuento | currency: 'ARS' : '$' : '1.0-0' }} con tu cupón.</p>
+      }
+      @if (o.puntos > 0) {
+        <p class="ahorro">Sumaste {{ o.puntos }} puntos.</p>
+      }
+    </header>
+
+    <p class="guardar">Guardá esta página: es tu comprobante. Presentá el QR de cada entrada en la puerta de la sala.</p>
+
+    <section class="entradas">
+      @for (e of o.entradas; track e.id) {
+        <article class="entrada" [attr.data-tipo]="e.tipo">
+          <div class="datos">
+            <h2>{{ o.funcion.titulo }}</h2>
+            <p class="fecha">{{ fechaLarga(o.funcion.starts_at) }}</p>
+            <p>{{ o.funcion.formato }} · {{ o.funcion.idioma }} · {{ o.funcion.sala }}</p>
+            <p class="butaca">Butaca <strong>{{ e.butaca }}</strong>
+              @if (e.tipo === 'vip') { <em class="tag vip">VIP</em> }
+              @if (e.tipo === 'accesible') { <em class="tag acc">Accesible</em> }
+            </p>
+            @if (o.funcion.edad_minima > 0) {
+              <p class="aviso-edad">
+                Mayores de {{ o.funcion.edad_minima }} años. Los menores deben ir acompañados por un adulto.
+              </p>
+            }
+          </div>
+          <div class="qr">
+            @if (qrs()[e.id]; as src) {
+              <img [src]="src" [alt]="'Código QR de la butaca ' + e.butaca" />
+            }
+            <code class="codigo">{{ e.qr_token.slice(0, 8) }}</code>
+            <small>Válido una sola vez</small>
+          </div>
+        </article>
+      }
+    </section>
+
+    <a routerLink="/" class="btn volver-btn">Volver a la cartelera</a>
+  }
+</main>

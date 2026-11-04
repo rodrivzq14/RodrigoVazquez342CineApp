@@ -8,3 +8,14 @@ export interface Screening {
   idioma: 'castellano' | 'subtitulada';
   sala: string;
 }
+
+export interface ScreeningDetail {
+  id: number;
+  movie_id: number;
+  titulo: string;
+  edad_minima: number;
+  starts_at: string;
+  formato: string;
+  idioma: string;
+  sala: string;
+}

@@ -66,4 +66,10 @@ export class AuthService {
   async logout() {
     await this.supabase.auth.signOut();
   }
+
+  async refreshProfile(): Promise<void> {
+    const s = this.session();
+    if (s) await this.loadProfile(s.user.id);
+  }
+
 }

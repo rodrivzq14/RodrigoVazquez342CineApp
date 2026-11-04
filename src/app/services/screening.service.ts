@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { SupabaseService } from './supabase.service';
-import { Screening } from '../models/screening';
+import { Screening, ScreeningDetail } from '../models/screening';
 
 @Injectable({ providedIn: 'root' })
 export class ScreeningService {
@@ -17,5 +17,28 @@ export class ScreeningService {
     if (error) throw error;
 
     return (data ?? []).map((s: any) => ({ ...s, sala: s.rooms?.nombre ?? '' }));
+  }
+
+  async getScreening(id: number): Promise<ScreeningDetail | null> {
+  const { data, error } = await this.supabase
+    .from('screenings')
+    .select('id, starts_at, formato, idioma, rooms(nombre), movies(id, titulo, edad_minima)')
+    .eq('id', id)
+    .maybeSingle();
+
+    if (error) throw error;
+    if (!data) return null;
+
+    const d = data as any;
+    return {
+      id: d.id,
+      starts_at: d.starts_at,
+      formato: d.formato,
+      idioma: d.idioma,
+      sala: d.rooms?.nombre ?? '',
+      movie_id: d.movies.id,
+      titulo: d.movies.titulo,
+      edad_minima: d.movies.edad_minima,
+    };
   }
 }

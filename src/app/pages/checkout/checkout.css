@@ -1,0 +1,17 @@
+.page { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+h1 { font-size: 2.6rem; color: var(--accent); margin-bottom: 1.2rem; }
+h2 { font-size: 1.8rem; margin-bottom: .4rem; }
+.layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+.meta { color: var(--muted); margin-bottom: 1rem; }
+.linea { display: flex; justify-content: space-between; padding: .5rem 0; border-bottom: 1px solid var(--surface-2); }
+.descuento { color: var(--ok); }
+.total { font-size: 1.3rem; border-bottom: 0; }
+.total strong { color: var(--accent); }
+.aviso-edad { background: rgba(200, 50, 60, .15); color: #ff8a92; padding: .6rem .8rem; border-radius: 10px; margin-bottom: 1rem; font-size: .9rem; }
+.aviso-vip { background: rgba(192, 132, 252, .15); color: #c084fc; padding: .6rem .8rem; border-radius: 10px; margin: .6rem 0; font-size: .9rem; }
+.simulado { color: var(--muted); font-size: .85rem; margin-bottom: 1rem; }
+.nota { color: var(--muted); font-size: .9rem; margin-top: .8rem; }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.volver { color: var(--muted); text-decoration: none; display: inline-block; margin-top: 1rem; }
+.estado { color: var(--muted); }
+@media (max-width: 720px) { .layout { grid-template-columns: 1fr; } }

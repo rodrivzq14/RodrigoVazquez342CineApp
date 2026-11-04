@@ -1,0 +1,85 @@
+<main class="page">
+  @if (cargando()) {
+    <p class="estado">Cargando sala...</p>
+  } @else if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  } @else if (funcion(); as f) {
+    <a [routerLink]="['/pelicula', f.movie_id]" class="volver">← Volver a la película</a>
+
+    <header class="cabecera">
+      <h1>{{ f.titulo }}</h1>
+      <p>{{ fechaLarga(f.starts_at) }} · {{ f.formato }} · {{ f.idioma }} · {{ f.sala }}</p>
+      @if (f.edad_minima > 0) {
+        <p class="aviso-edad">
+          Apta para mayores de {{ f.edad_minima }} años. Los menores deben ir acompañados por un adulto.
+        </p>
+      }
+    </header>
+
+    <ul class="leyenda">
+      <li><span class="butaca" data-estado="libre" data-tipo="normal"></span> Libre</li>
+      <li><span class="butaca" data-estado="mia" data-tipo="normal"></span> Tu selección</li>
+      <li><span class="butaca" data-estado="reservada" data-tipo="normal"></span> Reservada</li>
+      <li><span class="butaca" data-estado="ocupada" data-tipo="normal"></span> Ocupada</li>
+      <li><span class="butaca" data-estado="libre" data-tipo="vip"></span> VIP</li>
+      <li><span class="butaca" data-estado="libre" data-tipo="accesible"></span> Accesible</li>
+    </ul>
+
+    @if (aviso()) {
+      <div class="error-box">{{ aviso() }}</div>
+    }
+
+    <div class="sala">
+      <div class="pantalla">PANTALLA</div>
+
+      @for (fila of filas(); track fila.letra) {
+        <div class="fila">
+          <span class="letra">{{ fila.letra }}</span>
+          <div class="bloques">
+            @for (bloque of fila.bloques; track $index) {
+              <div class="bloque" [class.centro]="$index === 1">
+                @for (b of bloque; track b.seat_id) {
+                  <button type="button" class="butaca"
+                          [attr.data-estado]="b.estado"
+                          [attr.data-tipo]="b.tipo"
+                          [disabled]="b.estado === 'ocupada' || b.estado === 'reservada'"
+                          [title]="b.etiqueta + ' · ' + nombreTipo(b.tipo)"
+                          [attr.aria-label]="'Butaca ' + b.etiqueta + ', ' + nombreTipo(b.tipo) + ', ' + b.estado"
+                          (click)="toggle(b)"></button>
+                }
+              </div>
+            }
+          </div>
+          <span class="letra">{{ fila.letra }}</span>
+        </div>
+      }
+    </div>
+
+    <section class="resumen">
+      <h2>Tu selección</h2>
+      @if (elegidas().length === 0) {
+        <p class="estado">Tocá las butacas que querés reservar (hasta 8). Se guardan por 5 minutos.</p>
+      } @else {
+        <ul>
+          @for (b of elegidas(); track b.seat_id) {
+            <li>
+              <span>Butaca {{ b.etiqueta }}
+                <em class="tag" [attr.data-tipo]="b.tipo">{{ nombreTipo(b.tipo) }}</em>
+              </span>
+              <span>{{ precio(b.tipo) | currency: 'ARS' : '$' : '1.0-0' }}</span>
+            </li>
+          }
+        </ul>
+
+        @if (cantidadVip() > 0) {
+          <p class="aviso-vip">
+            Tu selección incluye {{ cantidadVip() }} butaca(s) VIP, con precio superior.
+          </p>
+        }
+
+        <p class="total">Total <strong>{{ total() | currency: 'ARS' : '$' : '1.0-0' }}</strong></p>
+        <button type="button" class="btn" [routerLink]="['/compra', f.id]">Continuar</button>
+      }
+    </section>
+  }
+</main>
