@@ -2,7 +2,13 @@
 .hero h1 { font-size: 3.4rem; color: var(--accent); line-height: 1; }
 .hero p { color: var(--muted); margin: .4rem 0 1.5rem; }
 
+.top { margin-bottom: 2.5rem; }
+.top h2 { font-size: 2rem; margin-bottom: 1rem; }
+/* Siempre 3 lugares, aunque todavía haya menos películas vendidas */
+.top .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 820px; }
+
 .filtros { margin-bottom: 2rem; }
+.filtros h2 { font-size: 2rem; margin-bottom: 1rem; }
 .filtros input { width: 100%; max-width: 420px; margin-bottom: 1rem; }
 
 .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
@@ -16,14 +22,5 @@
 .chip.limpiar { background: transparent; border-color: var(--muted); color: var(--muted); }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.5rem; }
-.pelicula h3 { font-size: 1.4rem; margin: .6rem 0 .1rem; }
-.meta { color: var(--muted); font-size: .85rem; }
-
-.poster { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 2 / 3; background: var(--surface); }
-.poster img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
-.pelicula:hover .poster img { transform: scale(1.05); }
-.edad { position: absolute; top: .5rem; right: .5rem; background: var(--accent-2); color: white; font-weight: 700; font-size: .8rem; padding: .2rem .5rem; border-radius: 6px; }
 
 .estado { color: var(--muted); grid-column: 1 / -1; padding: 2rem 0; }
-
-.pelicula { text-decoration: none; color: inherit; display: block; }

@@ -4,7 +4,20 @@
     <p>Elegí tu película y reservá tus butacas</p>
   </header>
 
+  <!-- Mientras busca o filtra, el top no tiene sentido y empuja los resultados para abajo -->
+  @if (top().length && !filtrando()) {
+    <section class="top">
+      <h2>Las más vistas</h2>
+      <div class="grid">
+        @for (m of top(); track m.id; let i = $index) {
+          <app-movie-card [movie]="m" [puesto]="i + 1" />
+        }
+      </div>
+    </section>
+  }
+
   <section class="filtros">
+    <h2>Todas las películas</h2>
     <input #q type="search" placeholder="Buscar por título..."
            [value]="texto()" (input)="texto.set(q.value)" />
 
@@ -16,7 +29,7 @@
           {{ g.nombre }}
         </button>
       }
-      @if (texto() || generosElegidos().size) {
+      @if (filtrando()) {
         <button type="button" class="chip limpiar" (click)="limpiar()">Limpiar</button>
       }
     </div>
@@ -29,21 +42,7 @@
   } @else {
     <section class="grid">
       @for (m of filtradas(); track m.id) {
-        <a class="pelicula" [routerLink]="['/pelicula', m.id]">
-          <div class="poster">
-            <img [src]="m.poster_url" [alt]="'Póster de ' + m.titulo" loading="lazy" />
-            @if (m.edad_minima > 0) {
-              <span class="edad">+{{ m.edad_minima }}</span>
-            }
-          </div>
-          <h3>{{ m.titulo }}</h3>
-          <p class="meta">
-            {{ m.duracion_min }} min ·
-            @for (g of m.generos; track g.id; let ultimo = $last) {
-              {{ g.nombre }}{{ ultimo ? '' : ', ' }}
-            }
-          </p>
-        </a>
+        <app-movie-card [movie]="m" />
       } @empty {
         <p class="estado">No hay películas que coincidan con tu búsqueda.</p>
       }

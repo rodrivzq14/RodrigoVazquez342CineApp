@@ -24,6 +24,13 @@ export class MovieService {
     }));
   }
 
+  /** Ids de las películas con más entradas vendidas, de mayor a menor */
+  async getMasVendidas(cantidad = 3): Promise<number[]> {
+    const { data, error } = await this.supabase.rpc('top_peliculas', { p_cant: cantidad });
+    if (error) throw error;
+    return (data ?? []).map((fila: { movie_id: number }) => fila.movie_id);
+  }
+
   async getGenres(): Promise<Genre[]> {
     const { data, error } = await this.supabase.from('genres').select('*').order('nombre');
     if (error) throw error;

@@ -27,7 +27,7 @@
 
         @if (q.descuento > 0) {
           <p class="linea descuento">
-            <span>Cupón primera compra (−{{ q.porcentaje }}%)</span>
+            <span>Cupón {{ q.cupon_tipo === 'mayores_50' ? 'mayores de 50' : 'primera compra' }} (−{{ q.porcentaje }}%)</span>
             <span>−{{ q.descuento | currency: 'ARS' : '$' : '1.0-0' }}</span>
           </p>
         }

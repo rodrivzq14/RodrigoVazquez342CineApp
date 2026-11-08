@@ -1,10 +1,12 @@
 import { SeatTipo } from './seat';
+import { CouponTipo } from './coupon';
 
 export interface Quote {
   subtotal: number;
   descuento: number;
   total: number;
   porcentaje: number;
+  cupon_tipo: CouponTipo | null;
   cantidad: number;
   cantidad_vip: number;
 }

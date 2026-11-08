@@ -1,0 +1,13 @@
+<a class="pelicula" [routerLink]="['/pelicula', movie().id]">
+  <div class="poster">
+    <img [src]="movie().poster_url" [alt]="'Póster de ' + movie().titulo" loading="lazy" />
+    @if (puesto()) {
+      <span class="puesto">#{{ puesto() }}</span>
+    }
+    @if (movie().edad_minima > 0) {
+      <span class="edad">+{{ movie().edad_minima }}</span>
+    }
+  </div>
+  <h3>{{ movie().titulo }}</h3>
+  <p class="meta">{{ movie().duracion_min }} min · {{ generos() }}</p>
+</a>
