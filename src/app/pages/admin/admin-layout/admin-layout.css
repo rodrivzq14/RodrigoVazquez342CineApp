@@ -11,9 +11,10 @@
 
 /* En el celular el menú pasa arriba, como pestañas */
 @media (max-width: 760px) {
-  .admin { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  /* minmax(0, 1fr): si no, las pestañas estiran la columna y aparece scroll horizontal en toda la página */
+  .admin { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; }
   .menu { border-right: 0; border-bottom: 1px solid var(--surface-2); padding: 1rem; }
   .menu h2 { display: none; }
-  .menu nav { flex-direction: row; overflow-x: auto; }
+  .menu nav { flex-direction: row; flex-wrap: wrap; }
   .menu a { white-space: nowrap; }
 }

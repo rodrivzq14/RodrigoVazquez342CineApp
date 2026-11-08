@@ -1,0 +1,103 @@
+<header class="encabezado">
+  <h1>Combos</h1>
+  @if (editando() === undefined) {
+    <button type="button" class="btn" (click)="abrir(null)">+ Nuevo combo</button>
+  }
+</header>
+<p class="ayuda">Cada combo incluye una entrada general más los productos que elijas, a un precio fijo. Se muestran destacados al comprar.</p>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+
+@if (editando() !== undefined) {
+  <form class="card" [formGroup]="form" (ngSubmit)="guardar()">
+    <h2>{{ editando() ? 'Editar combo' : 'Nuevo combo' }}</h2>
+
+    <div class="row">
+      <div class="field">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" formControlName="nombre" placeholder="Combo pareja"
+               [class.invalid]="form.controls.nombre.touched && form.controls.nombre.invalid" />
+      </div>
+      <div class="field">
+        <label for="precio">Precio del combo ($)</label>
+        <input id="precio" type="number" min="1" formControlName="precio"
+               [class.invalid]="form.controls.precio.touched && form.controls.precio.invalid" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="desc">Descripción (opcional)</label>
+      <input id="desc" formControlName="descripcion" placeholder="Entrada + pochoclo grande + gaseosa" />
+    </div>
+
+    <div class="field">
+      <label for="imagen">URL de la imagen (opcional)</label>
+      <input id="imagen" formControlName="imagen_url" placeholder="https://..." [class.invalid]="form.controls.imagen_url.invalid" />
+    </div>
+
+    <p class="label">Incluye: 1 entrada general +</p>
+    <div formArrayName="items" class="items">
+      @for (item of form.controls.items.controls; track item; let i = $index) {
+        <div class="item" [formGroupName]="i">
+          <select formControlName="product_id" aria-label="Producto"
+                  [class.invalid]="item.controls.product_id.touched && item.controls.product_id.invalid">
+            <option [ngValue]="0" disabled>Elegí un producto</option>
+            @for (p of productos(); track p.id) {
+              <option [ngValue]="p.id">{{ p.nombre }} ({{ p.precio | currency: 'ARS' : '$' : '1.0-0' }})</option>
+            }
+          </select>
+          <input type="number" min="1" max="10" formControlName="cantidad" aria-label="Cantidad" />
+          <button type="button" class="btn-chico peligro" (click)="quitarItem(i)"
+                  [disabled]="form.controls.items.length === 1" aria-label="Quitar producto">✕</button>
+        </div>
+      }
+    </div>
+    <button type="button" class="btn-chico" (click)="agregarItem()">+ Agregar producto</button>
+
+    <div class="comparacion">
+      <span>Por separado: {{ precioSuelto() | currency: 'ARS' : '$' : '1.0-0' }}</span>
+      @if (ahorro() > 0) {
+        <span class="ahorro">El cliente ahorra {{ ahorro() | currency: 'ARS' : '$' : '1.0-0' }}</span>
+      } @else {
+        <span class="caro">Ojo: el combo no es más barato que comprar todo suelto</span>
+      }
+    </div>
+
+    <label class="check">
+      <input type="checkbox" formControlName="activo" /> Se puede comprar
+    </label>
+
+    <div class="acciones">
+      <button type="button" class="btn secundario" (click)="editando.set(undefined)">Cancelar</button>
+      <button type="submit" class="btn" [disabled]="guardando()">{{ guardando() ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
+}
+
+<section class="lista">
+  @for (c of combos(); track c.id) {
+    <article class="combo" [class.inactivo]="!c.activo">
+      @if (c.imagen_url) {
+        <img [src]="c.imagen_url" alt="" />
+      }
+      <div class="info">
+        <h3>{{ c.nombre }}</h3>
+        <p class="incluye">
+          Entrada
+          @for (i of c.items; track i.product_id) {
+            + {{ i.cantidad > 1 ? i.cantidad + ' × ' : '' }}{{ i.nombre }}
+          }
+        </p>
+        <p class="precio">{{ c.precio | currency: 'ARS' : '$' : '1.0-0' }}</p>
+      </div>
+      <div class="botones">
+        <button type="button" class="btn-chico" (click)="abrir(c)">Editar</button>
+        <button type="button" class="btn-chico" (click)="toggleActivo(c)">{{ c.activo ? 'Pausar' : 'Activar' }}</button>
+      </div>
+    </article>
+  } @empty {
+    <p class="ayuda">Todavía no hay combos.</p>
+  }
+</section>

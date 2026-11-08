@@ -1,0 +1,109 @@
+<header class="encabezado">
+  <h1>Productos del candy</h1>
+  @if (editando() === undefined) {
+    <button type="button" class="btn" (click)="abrir(null)">+ Nuevo producto</button>
+  }
+</header>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+
+@if (editando() !== undefined) {
+  <form class="card" [formGroup]="form" (ngSubmit)="guardar()">
+    <h2>{{ editando() ? 'Editar producto' : 'Nuevo producto' }}</h2>
+
+    <div class="row">
+      <div class="field">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" formControlName="nombre" placeholder="Pochoclo grande"
+               [class.invalid]="form.controls.nombre.touched && form.controls.nombre.invalid" />
+      </div>
+      <div class="field">
+        <label for="categoria">Categoría</label>
+        <select id="categoria" formControlName="category_id"
+                [class.invalid]="form.controls.category_id.touched && form.controls.category_id.invalid">
+          <option [ngValue]="0" disabled>Elegí una</option>
+          @for (c of categorias(); track c.id) {
+            <option [ngValue]="c.id">{{ c.nombre }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="precio">Precio ($)</label>
+        <input id="precio" type="number" min="0" formControlName="precio"
+               [class.invalid]="form.controls.precio.touched && form.controls.precio.invalid" />
+      </div>
+      <div class="field">
+        <label for="imagen">URL de la imagen (opcional)</label>
+        <input id="imagen" formControlName="imagen_url" placeholder="https://..."
+               [class.invalid]="form.controls.imagen_url.invalid" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="desc">Descripción (opcional)</label>
+      <input id="desc" formControlName="descripcion" placeholder="Salado o dulce, 300 g" />
+    </div>
+
+    <label class="check">
+      <input type="checkbox" formControlName="activo" /> Se puede comprar
+    </label>
+
+    <div class="acciones">
+      <button type="button" class="btn secundario" (click)="editando.set(undefined)">Cancelar</button>
+      <button type="submit" class="btn" [disabled]="guardando()">{{ guardando() ? 'Guardando...' : 'Guardar' }}</button>
+    </div>
+  </form>
+}
+
+<div class="chips">
+  <button type="button" class="chip" [class.activo]="categoriaFiltro() === null" (click)="categoriaFiltro.set(null)">Todas</button>
+  @for (c of categorias(); track c.id) {
+    <button type="button" class="chip" [class.activo]="categoriaFiltro() === c.id" (click)="categoriaFiltro.set(c.id)">
+      {{ c.nombre }}
+    </button>
+  }
+  <form class="nueva-cat" (ngSubmit)="agregarCategoria()">
+    <input [formControl]="nuevaCategoria" placeholder="Nueva categoría" aria-label="Nueva categoría" />
+    <button type="submit" class="btn-chico">Agregar</button>
+  </form>
+</div>
+
+<div class="tabla-scroll">
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Categoría</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of filtrados(); track p.id) {
+        <tr [class.inactivo]="!p.activo">
+          <td>
+            <strong>{{ p.nombre }}</strong>
+            @if (p.descripcion) { <small>{{ p.descripcion }}</small> }
+          </td>
+          <td>{{ nombreCategoria(p.category_id) }}</td>
+          <td>{{ p.precio | currency: 'ARS' : '$' : '1.0-0' }}</td>
+          <td><span class="estado-tag" [class.on]="p.activo">{{ p.activo ? 'A la venta' : 'Pausado' }}</span></td>
+          <td class="acciones-fila">
+            <div>
+              <button type="button" class="btn-chico" (click)="abrir(p)">Editar</button>
+              <button type="button" class="btn-chico" (click)="toggleActivo(p)">{{ p.activo ? 'Pausar' : 'Activar' }}</button>
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="5" class="vacio">No hay productos en esta categoría.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>

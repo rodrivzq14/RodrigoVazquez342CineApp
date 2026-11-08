@@ -17,6 +17,14 @@ export const ADMIN_ROUTES: Routes = [
         loadComponent: () => import('./admin-screenings/admin-screenings').then(m => m.AdminScreenings),
       },
       {
+        path: 'productos',
+        loadComponent: () => import('./admin-products/admin-products').then(m => m.AdminProducts),
+      },
+      {
+        path: 'combos',
+        loadComponent: () => import('./admin-combos/admin-combos').then(m => m.AdminCombos),
+      },
+      {
         path: 'configuracion',
         loadComponent: () => import('./admin-settings/admin-settings').then(m => m.AdminSettings),
       },
