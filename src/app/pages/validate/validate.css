@@ -24,3 +24,12 @@ h1 { font-size: 2.6rem; color: var(--accent); margin-bottom: 1rem; }
 .peli { font-family: var(--font-title); font-size: 1.6rem; letter-spacing: 1px; }
 .tag { color: #c084fc; font-weight: 700; }
 .alerta { background: rgba(232, 176, 74, .15); color: var(--accent); padding: .5rem; border-radius: 8px; font-size: .9rem; }
+
+.modos { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin-bottom: 1rem; }
+.modos button { background: var(--surface); color: var(--muted); border: 2px solid var(--surface-2); border-radius: 12px; padding: .8rem; font: inherit; font-weight: 700; cursor: pointer; }
+.modos button.activo { border-color: var(--accent); color: var(--accent); }
+
+.entregar { list-style: none; padding: 0; margin: .6rem 0; text-align: left; display: inline-block; }
+.entregar li { padding: .3rem 0; font-size: 1.1rem; }
+.entregar small { display: block; color: var(--muted); font-size: .85rem; }
+.chico { font-size: .85rem; color: var(--muted); }

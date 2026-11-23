@@ -2,6 +2,16 @@
 .exito h1 { font-size: 2.8rem; color: var(--ok); line-height: 1; }
 .exito p { color: var(--muted); margin-top: .3rem; }
 .exito .ahorro { color: var(--accent); }
+.exito.cancelada h1 { color: var(--accent-2); }
+
+.candy { background: var(--surface); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1rem; }
+.candy h2 { font-size: 1.6rem; color: var(--accent); }
+.candy ul { list-style: none; padding: 0; margin: .4rem 0 .8rem; }
+.candy li { padding: .3rem 0; }
+.candy small { display: block; color: var(--muted); }
+.candy .como { font-size: .9rem; color: var(--muted); }
+.candy .entregado { color: var(--ok); font-weight: 700; }
+
 .guardar { background: var(--surface); padding: .8rem 1rem; border-radius: 10px; margin: 1.2rem 0; font-size: .9rem; }
 
 .entradas { display: grid; gap: 1rem; margin-bottom: 1.5rem; }

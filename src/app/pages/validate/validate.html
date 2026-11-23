@@ -1,5 +1,12 @@
 <main class="page">
-  <h1>Validar entradas</h1>
+  <h1>Validar QR</h1>
+
+  <div class="modos" role="tablist">
+    <button type="button" role="tab" [class.activo]="modo() === 'sala'" [attr.aria-selected]="modo() === 'sala'"
+            (click)="cambiarModo('sala')">🎬 Entrada a sala</button>
+    <button type="button" role="tab" [class.activo]="modo() === 'candy'" [attr.aria-selected]="modo() === 'candy'"
+            (click)="cambiarModo('candy')">🍿 Candy bar</button>
+  </div>
 
   <section class="card">
     <div id="lector" [class.oculto]="!camaraActiva()"></div>
@@ -39,6 +46,24 @@
       @if (v.edad_minima > 0) {
         <p class="alerta">Película +{{ v.edad_minima }}: si es menor, debe ingresar con un adulto.</p>
       }
+      <button type="button" class="btn" (click)="siguiente()">Siguiente</button>
+    </section>
+  }
+
+  @if (candy(); as c) {
+    <section class="resultado ok">
+      <span class="icono">✔</span>
+      <h2>Entregar</h2>
+      <p class="peli">{{ c.titulo }}</p>
+      <ul class="entregar">
+        @for (i of c.items; track $index) {
+          <li>
+            <strong>{{ i.cantidad }} × {{ i.nombre }}</strong>
+            @if (i.detalle) { <small>{{ i.detalle }}</small> }
+          </li>
+        }
+      </ul>
+      <p class="chico">Orden #{{ c.orden }} · ya quedó marcado como entregado</p>
       <button type="button" class="btn" (click)="siguiente()">Siguiente</button>
     </section>
   }

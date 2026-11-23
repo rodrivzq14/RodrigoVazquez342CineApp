@@ -5,18 +5,47 @@
     <div class="error-box">{{ error() }}</div>
     <a routerLink="/" class="volver">← Ir a la cartelera</a>
   } @else if (orden(); as o) {
-    <header class="exito">
-      <h1>¡Compra confirmada!</h1>
-      <p>Orden #{{ o.order_id }} · Total {{ o.total | currency: 'ARS' : '$' : '1.0-0' }}</p>
-      @if (o.descuento > 0) {
-        <p class="ahorro">Ahorraste {{ o.descuento | currency: 'ARS' : '$' : '1.0-0' }} con tu cupón.</p>
-      }
-      @if (o.puntos > 0) {
-        <p class="ahorro">Sumaste {{ o.puntos }} puntos.</p>
-      }
-    </header>
+    @if (o.estado === 'cancelada') {
+      <header class="exito cancelada">
+        <h1>Compra cancelada</h1>
+        <p>Orden #{{ o.order_id }} · El importe se acreditó como crédito en tu cuenta. Estos QR ya no sirven.</p>
+      </header>
+    } @else {
+      <header class="exito">
+        <h1>¡Compra confirmada!</h1>
+        <p>Orden #{{ o.order_id }} · Total {{ o.total | currency: 'ARS' : '$' : '1.0-0' }}</p>
+        @if (o.credito_usado > 0) {
+          <p class="ahorro">Usaste {{ o.credito_usado | currency: 'ARS' : '$' : '1.0-0' }} de tu crédito.</p>
+        }
+        @if (o.descuento > 0) {
+          <p class="ahorro">Ahorraste {{ o.descuento | currency: 'ARS' : '$' : '1.0-0' }} con tu cupón.</p>
+        }
+        @if (o.puntos > 0) {
+          <p class="ahorro">Sumaste {{ o.puntos }} puntos.</p>
+        }
+      </header>
 
-    <p class="guardar">Guardá esta página: es tu comprobante. Presentá el QR de cada entrada en la puerta de la sala.</p>
+      <p class="guardar">Guardá esta página: es tu comprobante. Presentá el QR de cada entrada en la puerta de la sala.</p>
+    }
+
+    @if (o.items.length) {
+      <section class="candy">
+        <h2>Candy</h2>
+        <ul>
+          @for (i of o.items; track $index) {
+            <li>
+              <strong>{{ i.cantidad }} × {{ i.nombre }}</strong>
+              @if (i.detalle) { <small>{{ i.detalle }}</small> }
+            </li>
+          }
+        </ul>
+        @if (o.candy_entregado_at) {
+          <p class="entregado">Ya retirado.</p>
+        } @else {
+          <p class="como">Retiralo en el candy bar mostrando <strong>cualquiera</strong> de los QR de abajo.</p>
+        }
+      </section>
+    }
 
     <section class="entradas">
       @for (e of o.entradas; track e.id) {

@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Html5Qrcode } from 'html5-qrcode';
-import { EntradaValidada, TicketService } from '../../services/ticket.service';
+import { CandyEntregado, EntradaValidada, TicketService } from '../../services/ticket.service';
 import { FechaArPipe } from '../../pipes/fecha-ar-pipe';
 
 @Component({
@@ -14,9 +14,13 @@ export class Validate {
   private tickets = inject(TicketService);
   private fb = inject(FormBuilder).nonNullable;
 
+  // El mismo QR sirve en la puerta de la sala y en el candy: el empleado elige dónde está
+  readonly modo = signal<'sala' | 'candy'>('sala');
+
   readonly camaraActiva = signal(false);
   readonly procesando = signal(false);
   readonly valida = signal<EntradaValidada | null>(null);
+  readonly candy = signal<CandyEntregado | null>(null);
   readonly error = signal('');
 
   private lector: Html5Qrcode | null = null;
@@ -67,19 +71,30 @@ export class Validate {
   private async validar(codigo: string) {
     this.procesando.set(true);
     this.valida.set(null);
+    this.candy.set(null);
     this.error.set('');
     try {
-      this.valida.set(await this.tickets.validar(codigo));
+      if (this.modo() === 'sala') {
+        this.valida.set(await this.tickets.validar(codigo));
+      } else {
+        this.candy.set(await this.tickets.entregarCandy(codigo));
+      }
       this.form.reset();
     } catch (e: any) {
-      this.error.set(e.message ?? 'No se pudo validar la entrada');
+      this.error.set(e.message ?? 'No se pudo validar');
     } finally {
       this.procesando.set(false);
     }
   }
 
+  cambiarModo(modo: 'sala' | 'candy') {
+    this.modo.set(modo);
+    this.siguiente();
+  }
+
   siguiente() {
     this.valida.set(null);
+    this.candy.set(null);
     this.error.set('');
     if (this.lector?.isScanning) this.lector.resume();
   }

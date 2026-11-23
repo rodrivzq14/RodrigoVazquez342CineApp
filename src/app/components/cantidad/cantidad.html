@@ -1,0 +1,5 @@
+<div class="cantidad">
+  <button type="button" (click)="restar()" [disabled]="deshabilitado() || valor() === 0" aria-label="Quitar uno">−</button>
+  <span [class.cero]="valor() === 0">{{ valor() }}</span>
+  <button type="button" (click)="sumar()" [disabled]="deshabilitado() || valor() >= max()" aria-label="Agregar uno">+</button>
+</div>
