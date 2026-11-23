@@ -1,0 +1,29 @@
+.page { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.cabecera h1 { font-size: 2.8rem; color: var(--accent); line-height: 1; }
+.cabecera p { color: var(--muted); margin-top: .3rem; }
+
+.saldos { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+.saldo { background: var(--surface); border-radius: var(--radius); padding: 1.2rem; display: flex; flex-direction: column; gap: .2rem; }
+.saldo span { color: var(--muted); font-size: .9rem; }
+.saldo strong { font-family: var(--font-title); font-size: 2.6rem; font-weight: 400; color: var(--accent); line-height: 1; }
+.saldo small { color: var(--muted); font-size: .8rem; }
+
+section h2 { font-size: 1.8rem; margin: 1.5rem 0 .8rem; }
+.estado { color: var(--muted); }
+
+.compra { display: grid; grid-template-columns: 70px 1fr auto; gap: 1rem; align-items: center; background: var(--surface); border-radius: var(--radius); padding: .8rem; margin-bottom: .8rem; }
+.compra img { width: 70px; aspect-ratio: 2 / 3; object-fit: cover; border-radius: 8px; }
+.compra h3 { font-size: 1.4rem; }
+.fecha { color: var(--accent); font-size: .9rem; text-transform: capitalize; }
+.detalle { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+.acciones { display: flex; flex-direction: column; gap: .4rem; }
+.acciones a { text-decoration: none; text-align: center; }
+.compra.cancelada { opacity: .6; }
+.tag { display: inline-block; margin-top: .3rem; font-size: .75rem; padding: .1rem .5rem; border-radius: 999px; background: rgba(200, 50, 60, .2); color: #ff8a92; }
+
+@media (max-width: 560px) {
+  .saldos { grid-template-columns: 1fr; }
+  .compra { grid-template-columns: 56px 1fr; }
+  .compra img { width: 56px; }
+  .acciones { grid-column: 1 / -1; flex-direction: row; }
+}

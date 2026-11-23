@@ -1,0 +1,13 @@
+.estrellas { display: inline-flex; gap: 1px; font-size: 1rem; line-height: 1; }
+.estrellas.grande { font-size: 2rem; gap: 4px; }
+
+.llena { color: var(--accent); }
+.vacia { color: var(--surface-2); }
+/* media estrella: mitad dorada, mitad gris */
+.media {
+  background: linear-gradient(90deg, var(--accent) 50%, var(--surface-2) 50%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+.editable button { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; transition: transform .1s; }
+.editable button:hover { transform: scale(1.15); }

@@ -1,11 +1,13 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { MovieService } from '../../services/movie.service';
+import { ReviewService } from '../../services/review.service';
 import { Genre, Movie } from '../../models/movie';
+import { Rating } from '../../models/review';
 import { MovieCard } from '../../components/movie-card/movie-card';
 
 // "Órbita" -> "orbita", así buscar "orbita" u "orb" la encuentra igual
 function sinAcentos(texto: string): string {
-  return texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
 }
 
 @Component({
@@ -16,10 +18,12 @@ function sinAcentos(texto: string): string {
 })
 export class Catalog {
   private movieService = inject(MovieService);
+  private reviewService = inject(ReviewService);
 
   readonly movies = signal<Movie[]>([]);
   readonly genres = signal<Genre[]>([]);
   readonly topIds = signal<number[]>([]);
+  readonly ratings = signal<Map<number, Rating>>(new Map());
   readonly cargando = signal(true);
   readonly error = signal('');
 
@@ -67,12 +71,21 @@ export class Catalog {
       this.cargando.set(false);
     }
 
-    // Si falla el top no rompemos la cartelera, simplemente no se muestra
+    // Si falla el top o los promedios no rompemos la cartelera, simplemente no se muestran
     try {
-      this.topIds.set(await this.movieService.getMasVendidas(3));
+      const [top, ratings] = await Promise.all([
+        this.movieService.getMasVendidas(3),
+        this.reviewService.getRatings(),
+      ]);
+      this.topIds.set(top);
+      this.ratings.set(ratings);
     } catch {
       this.topIds.set([]);
     }
+  }
+
+  promedio(movieId: number): number | null {
+    return this.ratings().get(movieId)?.promedio ?? null;
   }
 
   toggleGenero(id: number) {

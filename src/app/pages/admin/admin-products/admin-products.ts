@@ -37,7 +37,8 @@ export class AdminProducts {
     activo: [true],
   });
 
-  nuevaCategoria = this.fb.control('', Validators.required);
+  // va en un FormGroup para que el <form> no haga el submit nativo (recarga la página)
+  categoriaForm = this.fb.group({ nombre: ['', Validators.required] });
 
   constructor() {
     this.cargar();
@@ -61,11 +62,11 @@ export class AdminProducts {
   }
 
   async agregarCategoria() {
-    const nombre = this.nuevaCategoria.value.trim();
+    const nombre = this.categoriaForm.controls.nombre.value.trim();
     if (!nombre) return;
     try {
       await this.candy.crearCategoria(nombre);
-      this.nuevaCategoria.reset();
+      this.categoriaForm.reset();
       this.categorias.set(await this.candy.getCategorias());
     } catch {
       this.error.set('Esa categoría ya existe');

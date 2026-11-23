@@ -21,3 +21,7 @@
 .estado { color: var(--muted); padding: 1rem 0; }
 
 @media (max-width: 640px) { .ficha { grid-template-columns: 1fr; } }
+.rating { display: flex; align-items: center; gap: .5rem; margin: .4rem 0 .2rem; }
+.rating strong { font-size: 1.4rem; }
+.rating span { color: var(--muted); font-size: .9rem; }
+.rating.sin { color: var(--muted); font-size: .9rem; }

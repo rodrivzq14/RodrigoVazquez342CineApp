@@ -1,0 +1,19 @@
+.resenas { margin-top: 2.5rem; }
+h2 { font-size: 2rem; margin-bottom: 1rem; }
+.aviso, .vacio { color: var(--muted); }
+
+.form { padding: 1.2rem; margin-bottom: 1rem; max-width: 560px; }
+.label { color: var(--muted); font-size: .85rem; margin-bottom: .3rem; }
+.form .field { margin-top: 1rem; }
+textarea { resize: vertical; }
+.contador { color: var(--muted); font-size: .75rem; text-align: right; }
+.acciones { display: flex; gap: .8rem; }
+.dejar { width: auto; margin-bottom: 1rem; }
+
+.resena { background: var(--surface); border-radius: var(--radius); padding: 1rem 1.2rem; margin-bottom: .8rem; }
+.resena.mia { border: 1px solid var(--accent); }
+.resena header { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.resena header small { color: var(--muted); margin-left: auto; text-transform: capitalize; }
+.resena p { margin-top: .5rem; line-height: 1.5; }
+.vio { font-size: .7rem; padding: .1rem .5rem; border-radius: 999px; background: rgba(76, 175, 125, .15); color: #7fdcaa; }
+.acciones-mia { display: flex; gap: .4rem; margin-top: .6rem; }

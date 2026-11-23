@@ -2,8 +2,12 @@ import { Component, OnInit, computed, inject, input, signal } from '@angular/cor
 import { RouterLink } from '@angular/router';
 import { MovieService } from '../../services/movie.service';
 import { ScreeningService } from '../../services/screening.service';
+import { ReviewService } from '../../services/review.service';
+import { Estrellas } from '../../components/estrellas/estrellas';
+import { Resenas } from '../../components/resenas/resenas';
 import { Movie } from '../../models/movie';
 import { Screening } from '../../models/screening';
+import { Rating } from '../../models/review';
 
 const ZONA = 'America/Argentina/Buenos_Aires';
 
@@ -15,17 +19,19 @@ interface Dia {
 
 @Component({
   selector: 'app-movie-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, Estrellas, Resenas],
   templateUrl: './movie-detail.html',
   styleUrl: './movie-detail.css',
 })
 export class MovieDetail implements OnInit {
   private movieService = inject(MovieService);
   private screeningService = inject(ScreeningService);
+  private reviewService = inject(ReviewService);
 
   readonly id = input.required<string>(); // viene de la URL /pelicula/:id
 
   readonly movie = signal<Movie | null>(null);
+  readonly rating = signal<Rating | null>(null);
   readonly funciones = signal<Screening[]>([]);
   readonly cargando = signal(true);
   readonly error = signal('');
@@ -57,12 +63,14 @@ export class MovieDetail implements OnInit {
   async ngOnInit() {
     try {
       const movieId = Number(this.id());
-      const [movie, funciones] = await Promise.all([
+      const [movie, funciones, rating] = await Promise.all([
         this.movieService.getMovie(movieId),
         this.screeningService.getUpcoming(movieId),
+        this.reviewService.getRating(movieId),
       ]);
       this.movie.set(movie);
       this.funciones.set(funciones);
+      this.rating.set(rating);
     } catch {
       this.error.set('No pudimos cargar la película');
     } finally {

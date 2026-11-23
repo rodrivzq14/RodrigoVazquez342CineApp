@@ -67,8 +67,8 @@
       {{ c.nombre }}
     </button>
   }
-  <form class="nueva-cat" (ngSubmit)="agregarCategoria()">
-    <input [formControl]="nuevaCategoria" placeholder="Nueva categoría" aria-label="Nueva categoría" />
+  <form class="nueva-cat" [formGroup]="categoriaForm" (ngSubmit)="agregarCategoria()">
+    <input formControlName="nombre" placeholder="Nueva categoría" aria-label="Nueva categoría" />
     <button type="submit" class="btn-chico">Agregar</button>
   </form>
 </div>

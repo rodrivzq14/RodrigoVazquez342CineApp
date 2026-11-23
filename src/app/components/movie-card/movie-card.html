@@ -9,5 +9,8 @@
     }
   </div>
   <h3>{{ movie().titulo }}</h3>
+  @if (promedio(); as p) {
+    <p class="rating"><app-estrellas [valor]="p" /> {{ p }}</p>
+  }
   <p class="meta">{{ movie().duracion_min }} min · {{ generos() }}</p>
 </a>

@@ -1,0 +1,59 @@
+<section class="resenas">
+  <h2>Reseñas</h2>
+
+  @if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  }
+
+  <!-- La propia: formulario o la reseña ya hecha -->
+  @if (!auth.isLoggedIn()) {
+    <p class="aviso"><a routerLink="/login">Iniciá sesión</a> para dejar tu reseña.</p>
+  } @else if (editando()) {
+    <form class="card form" [formGroup]="form" (ngSubmit)="guardar()">
+      <p class="label">¿Cuántas estrellas le das?</p>
+      <app-estrellas [valor]="estrellas()" [editable]="true" tamanio="grande" (cambio)="estrellas.set($event)" />
+
+      <div class="field">
+        <label for="comentario">Comentario (opcional)</label>
+        <textarea id="comentario" rows="3" maxlength="280" formControlName="comentario"
+                  placeholder="¿Qué te pareció?"></textarea>
+        <small class="contador">{{ comentario.value.length }}/280</small>
+      </div>
+
+      <div class="acciones">
+        <button type="button" class="btn secundario" (click)="editando.set(false)">Cancelar</button>
+        <button type="submit" class="btn" [disabled]="guardando()">{{ guardando() ? 'Guardando...' : 'Publicar' }}</button>
+      </div>
+    </form>
+  } @else if (mia(); as r) {
+    <article class="resena mia">
+      <header>
+        <strong>Tu reseña</strong>
+        <app-estrellas [valor]="r.estrellas" />
+      </header>
+      @if (r.comentario) { <p>{{ r.comentario }}</p> }
+      <div class="acciones-mia">
+        <button type="button" class="btn-chico" (click)="editar()">Editar</button>
+        <button type="button" class="btn-chico peligro" (click)="borrar()">Borrar</button>
+      </div>
+    </article>
+  } @else {
+    <button type="button" class="btn dejar" (click)="editar()">★ Dejar mi reseña</button>
+  }
+
+  @for (r of otras(); track r.id) {
+    <article class="resena">
+      <header>
+        <strong>{{ r.autor }}</strong>
+        @if (r.la_vio) { <span class="vio">Vio la película</span> }
+        <app-estrellas [valor]="r.estrellas" />
+        <small>{{ r.created_at | fechaAr: 'dia' }}</small>
+      </header>
+      @if (r.comentario) { <p>{{ r.comentario }}</p> }
+    </article>
+  } @empty {
+    @if (!mia()) {
+      <p class="vacio">Todavía nadie opinó. ¡Sé el primero!</p>
+    }
+  }
+</section>

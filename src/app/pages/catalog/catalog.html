@@ -10,7 +10,7 @@
       <h2>Las más vistas</h2>
       <div class="grid">
         @for (m of top(); track m.id; let i = $index) {
-          <app-movie-card [movie]="m" [puesto]="i + 1" />
+          <app-movie-card [movie]="m" [puesto]="i + 1" [promedio]="promedio(m.id)" />
         }
       </div>
     </section>
@@ -42,7 +42,7 @@
   } @else {
     <section class="grid">
       @for (m of filtradas(); track m.id) {
-        <app-movie-card [movie]="m" />
+        <app-movie-card [movie]="m" [promedio]="promedio(m.id)" />
       } @empty {
         <p class="estado">No hay películas que coincidan con tu búsqueda.</p>
       }

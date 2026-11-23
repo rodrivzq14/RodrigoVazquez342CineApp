@@ -12,3 +12,4 @@
   font-family: var(--font-title); font-size: 2.4rem; line-height: 1; letter-spacing: 1px;
   color: var(--accent); text-shadow: 0 2px 10px rgba(0, 0, 0, .8);
 }
+.rating { display: flex; align-items: center; gap: .35rem; font-size: .85rem; color: var(--muted); margin-bottom: .1rem; }

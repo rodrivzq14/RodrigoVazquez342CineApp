@@ -1,1 +1,77 @@
-<p>profile-page works!</p>
+<main class="page">
+  @if (auth.profile(); as p) {
+    <header class="cabecera">
+      <h1>Hola, {{ p.nombre }}</h1>
+      <p>{{ p.email }}</p>
+    </header>
+
+    <section class="saldos">
+      <div class="saldo">
+        <span>Puntos</span>
+        <strong>{{ p.puntos | number: '1.0-0' }}</strong>
+        <small>Sumás 1 punto por cada peso que pagás</small>
+      </div>
+      <div class="saldo">
+        <span>Crédito</span>
+        <strong>{{ p.credito | currency: 'ARS' : '$' : '1.0-0' }}</strong>
+        <small>Se usa al pagar, junto con la tarjeta</small>
+      </div>
+    </section>
+  }
+
+  @if (mensaje()) {
+    <div class="ok-box">{{ mensaje() }}</div>
+  }
+  @if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  }
+
+  @if (cargando()) {
+    <p class="estado">Cargando tus compras...</p>
+  } @else {
+    <section>
+      <h2>Próximas funciones</h2>
+      @for (c of proximas(); track c.id) {
+        <ng-container *ngTemplateOutlet="tarjeta; context: { $implicit: c }" />
+      } @empty {
+        <p class="estado">No tenés entradas para funciones que vienen. <a routerLink="/">Ver cartelera</a></p>
+      }
+    </section>
+
+    @if (anteriores().length) {
+      <section>
+        <h2>Historial</h2>
+        @for (c of anteriores(); track c.id) {
+          <ng-container *ngTemplateOutlet="tarjeta; context: { $implicit: c }" />
+        }
+      </section>
+    }
+  }
+</main>
+
+<ng-template #tarjeta let-c>
+  <article class="compra" [class.cancelada]="c.estado === 'cancelada'">
+    <img [src]="c.poster_url" alt="" />
+    <div class="datos">
+      <h3>{{ c.titulo }}</h3>
+      <p class="fecha">{{ c.starts_at | fechaAr: 'larga' }} · {{ c.sala }}</p>
+      <p class="detalle">
+        {{ c.entradas }} entrada(s)
+        @if (c.items_candy > 0) { · {{ c.items_candy }} del candy }
+        · {{ c.total | currency: 'ARS' : '$' : '1.0-0' }}
+        @if (c.credito_usado > 0) { (+ {{ c.credito_usado | currency: 'ARS' : '$' : '1.0-0' }} de crédito) }
+      </p>
+      @if (c.estado === 'cancelada') {
+        <span class="tag">Cancelada</span>
+      }
+    </div>
+    <div class="acciones">
+      <a class="btn-chico" [routerLink]="['/confirmacion', c.id]" [queryParams]="{ t: c.access_token }">Ver entradas</a>
+      @if (c.cancelable) {
+        <button type="button" class="btn-chico peligro" [disabled]="cancelando() === c.id" (click)="cancelar(c)">
+          {{ cancelando() === c.id ? 'Cancelando...' : 'Cancelar' }}
+        </button>
+      }
+    </div>
+  </article>
+</ng-template>

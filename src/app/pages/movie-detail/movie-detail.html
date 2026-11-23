@@ -11,6 +11,15 @@
 
       <div class="info">
         <h1>{{ m.titulo }}</h1>
+        @if (rating(); as r) {
+          <p class="rating">
+            <app-estrellas [valor]="r.promedio" tamanio="grande" />
+            <strong>{{ r.promedio }}</strong>
+            <span>({{ r.cantidad }} {{ r.cantidad === 1 ? 'reseña' : 'reseñas' }})</span>
+          </p>
+        } @else {
+          <p class="rating sin">Sin reseñas todavía</p>
+        }
         <p class="meta">
           {{ m.duracion_min }} min ·
           @for (g of m.generos; track g.id; let ultimo = $last) {
@@ -54,6 +63,6 @@
       }
     </section>
 
-    <!-- Acá van después las reseñas y el promedio de estrellas -->
+    <app-resenas [movieId]="m.id" (ratingCambio)="rating.set($event)" />
   }
 </main>
