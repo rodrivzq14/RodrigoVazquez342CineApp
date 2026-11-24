@@ -1,4 +1,4 @@
-h1 { font-size: 2.4rem; color: var(--accent); }
+h1 { font-size: 2.4rem; color: var(--text); }
 .ayuda { color: var(--muted); font-size: .9rem; margin: .4rem 0 1.2rem; max-width: 760px; line-height: 1.5; }
 
 .salas { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
@@ -10,12 +10,12 @@ h1 { font-size: 2.4rem; color: var(--accent); }
 .sala li { display: flex; align-items: center; gap: .5rem; }
 .punto { width: 10px; height: 10px; border-radius: 3px; }
 .punto.normal { background: var(--surface-2); border: 1px solid var(--muted); }
-.punto.vip { background: #c084fc; }
-.punto.accesible { background: #4aa3e8; }
+.punto.vip { background: var(--vip); }
+.punto.accesible { background: var(--accesible); }
 .total { color: var(--muted); font-size: .85rem; }
 .sala .btn-chico { align-self: flex-start; }
 .estado-tag { font-size: .75rem; padding: .15rem .6rem; border-radius: 999px; background: var(--surface-2); color: var(--muted); }
-.estado-tag.on { background: rgba(76, 175, 125, .15); color: #7fdcaa; }
+.estado-tag.on { background: var(--ok-soft); color: var(--ok); }
 
 .card { padding: 1.2rem; max-width: 520px; }
 .card h2 { font-size: 1.4rem; margin-bottom: .8rem; }

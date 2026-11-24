@@ -6,7 +6,7 @@ import { FechaArPipe } from '../../../pipes/fecha-ar-pipe';
 import { hoyAr, sumarDias } from '../../../utils/fechas';
 
 // Colores de las películas en el gráfico (se repiten si hay más)
-const COLORES = ['#e8b04a', '#c8323c', '#4aa3e8', '#4caf7d', '#c084fc', '#f28c38', '#a89fb3'];
+const COLORES = ['#b3261e', '#1d6aa8', '#2c7a4b', '#8a5a00', '#6b3fb0', '#d9735c', '#6e6559'];
 
 @Component({
   imports: [CurrencyPipe, DecimalPipe, FechaArPipe],
@@ -98,7 +98,7 @@ export class AdminReportes implements OnDestroy {
     // chart.js se carga recién acá, así no pesa en el resto de la app
     const { Chart, registerables } = await import('chart.js');
     Chart.register(...registerables);
-    Chart.defaults.color = '#a89fb3';
+    Chart.defaults.color = '#6e6559';
     Chart.defaults.font.family = 'DM Sans, sans-serif';
 
     this.charts.forEach((c) => c.destroy());
@@ -140,8 +140,8 @@ export class AdminReportes implements OnDestroy {
             datasets: [{
               label: 'Unidades',
               data: this.candy().map((c) => c.unidades),
-              backgroundColor: this.candy().map((_, i) => (i === 0 ? '#e8b04a' : '#26202e')),
-              borderColor: '#e8b04a',
+              backgroundColor: this.candy().map((_, i) => (i === 0 ? '#b3261e' : '#ddd3c2')),
+              borderColor: '#1d1a16',
               borderWidth: 1,
             }],
           },
@@ -182,7 +182,7 @@ export class AdminReportes implements OnDestroy {
     const t = this.totales();
 
     doc.setFontSize(18);
-    doc.text('Reporte de facturación', 14, 18);
+    doc.text('El Proyector · Reporte de facturación', 14, 18);
     doc.setFontSize(10);
     doc.text(`Del ${this.desde()} al ${this.hasta()}`, 14, 25);
     doc.text(`Facturación: ${this.pesos(t.facturacion)} · Entradas: ${t.entradas} · Compras: ${t.compras}`, 14, 31);
@@ -192,15 +192,15 @@ export class AdminReportes implements OnDestroy {
       head: [['Día', 'Compras', 'Entradas', 'Facturación', 'Pagado con crédito']],
       body: this.diasConVentas().map((d) => [d.dia, d.compras, d.entradas, this.pesos(d.facturacion), this.pesos(d.credito_usado)]),
       foot: [['Total', t.compras, t.entradas, this.pesos(t.facturacion), this.pesos(t.credito)]],
-      headStyles: { fillColor: [26, 22, 32] },
-      footStyles: { fillColor: [232, 176, 74], textColor: [26, 18, 6] },
+      headStyles: { fillColor: [29, 26, 22] },
+      footStyles: { fillColor: [179, 38, 30], textColor: [255, 250, 242] },
     });
 
     if (this.candy().length) {
       autoTable(doc, {
         head: [['Producto del candy', 'Unidades vendidas']],
         body: this.candy().map((c) => [c.producto, c.unidades]),
-        headStyles: { fillColor: [26, 22, 32] },
+        headStyles: { fillColor: [29, 26, 22] },
       });
     }
 

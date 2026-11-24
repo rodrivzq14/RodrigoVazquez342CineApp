@@ -15,5 +15,5 @@ textarea { resize: vertical; }
 .resena header { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
 .resena header small { color: var(--muted); margin-left: auto; text-transform: capitalize; }
 .resena p { margin-top: .5rem; line-height: 1.5; }
-.vio { font-size: .7rem; padding: .1rem .5rem; border-radius: 999px; background: rgba(76, 175, 125, .15); color: #7fdcaa; }
+.vio { font-size: .7rem; padding: .1rem .5rem; border-radius: 999px; background: var(--ok-soft); color: var(--ok); }
 .acciones-mia { display: flex; gap: .4rem; margin-top: .6rem; }

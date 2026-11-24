@@ -1,7 +1,7 @@
 .cantidad { display: inline-flex; align-items: center; gap: .3rem; background: var(--surface-2); border-radius: 999px; padding: .2rem; }
 button {
   width: 30px; height: 30px; border-radius: 50%; border: 0; cursor: pointer;
-  background: var(--accent); color: #1a1206; font-size: 1.1rem; font-weight: 700; line-height: 1;
+  background: var(--accent); color: var(--on-accent); font-size: 1.1rem; font-weight: 700; line-height: 1;
 }
 button:disabled { background: transparent; color: var(--muted); cursor: not-allowed; }
 span { min-width: 1.6rem; text-align: center; font-weight: 700; }

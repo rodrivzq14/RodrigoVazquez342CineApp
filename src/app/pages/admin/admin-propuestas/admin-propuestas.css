@@ -1,4 +1,4 @@
-h1 { font-size: 2.4rem; color: var(--accent); }
+h1 { font-size: 2.4rem; color: var(--text); }
 .ayuda { color: var(--muted); font-size: .9rem; margin: .4rem 0 1.2rem; }
 .chips { margin-bottom: 1.2rem; }
 

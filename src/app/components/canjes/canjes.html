@@ -12,7 +12,7 @@
     <div class="recompensas">
       @for (r of recompensas(); track r.id) {
         <article class="recompensa" [class.alcanza]="puntos() >= r.puntos">
-          <span class="icono">{{ r.tipo === 'entrada' ? '🎟️' : '🍿' }}</span>
+          <span class="tipo">{{ r.tipo === 'entrada' ? 'Entrada' : 'Candy' }}</span>
           <strong>{{ r.nombre }}</strong>
           <span class="costo">{{ r.puntos | number: '1.0-0' }} pts</span>
           <button type="button" class="btn-chico" [disabled]="puntos() < r.puntos || canjeando() === r.id" (click)="canjear(r)">

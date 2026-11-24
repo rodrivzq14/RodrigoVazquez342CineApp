@@ -1,6 +1,6 @@
 <button type="button" class="campana" (click)="abierto.set(!abierto())"
         [attr.aria-label]="'Notificaciones, ' + servicio.sinLeer() + ' sin leer'" [attr.aria-expanded]="abierto()">
-  🔔
+  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6v3.5L4.5 15v1h15v-1L18 12.5V9a6 6 0 0 0-6-6Zm0 18a2.5 2.5 0 0 0 2.4-2h-4.8a2.5 2.5 0 0 0 2.4 2Z" fill="currentColor"/></svg>
   @if (servicio.sinLeer() > 0) {
     <span class="badge">{{ servicio.sinLeer() > 9 ? '9+' : servicio.sinLeer() }}</span>
   }

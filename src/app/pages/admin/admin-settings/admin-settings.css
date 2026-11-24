@@ -1,4 +1,4 @@
-h1 { font-size: 2.4rem; color: var(--accent); margin-bottom: .4rem; }
+h1 { font-size: 2.4rem; color: var(--text); margin-bottom: .4rem; }
 h2 { font-size: 1.6rem; margin-bottom: 1rem; }
 h3 { font-size: 1.2rem; color: var(--muted); margin-bottom: .6rem; }
 .ayuda { color: var(--muted); font-size: .9rem; margin-bottom: 1.2rem; }

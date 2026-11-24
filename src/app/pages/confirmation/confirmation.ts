@@ -53,12 +53,13 @@ export class Confirmation implements OnInit {
     o.entradas.forEach((e, i) => {
       if (i > 0) doc.addPage();
 
-      doc.setFillColor(13, 11, 14);
+      doc.setFillColor(29, 26, 22);
       doc.rect(0, 0, 100, 28, 'F');
-      doc.setTextColor(232, 176, 74);
+      doc.setTextColor(245, 240, 230);
       doc.setFontSize(20);
-      doc.text('CINE', 8, 13);
+      doc.text('El Proyector', 8, 13);
       doc.setFontSize(9);
+      doc.setTextColor(232, 160, 150);
       doc.text(`Orden #${o.order_id}`, 8, 21);
 
       doc.setTextColor(20, 20, 20);

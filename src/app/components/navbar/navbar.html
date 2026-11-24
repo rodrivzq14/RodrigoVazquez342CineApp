@@ -1,5 +1,8 @@
 <nav class="nav">
-  <a routerLink="/" class="logo">🎬 CINE</a>
+  <a routerLink="/" class="logo" aria-label="El Proyector, ir a la cartelera">
+    <img src="icons/logo.svg" alt="" width="36" height="36" />
+    <span>El <em>Proyector</em></span>
+  </a>
 
   <div class="links">
     <a *appSiPermiso="'validar'" routerLink="/validar">Validar QR</a>

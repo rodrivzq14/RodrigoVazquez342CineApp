@@ -1,5 +1,5 @@
 .encabezado { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
-.encabezado h1 { font-size: 2.4rem; color: var(--accent); }
+.encabezado h1 { font-size: 2.4rem; color: var(--text); }
 .encabezado .btn { width: auto; }
 
 app-movie-form { display: block; margin-bottom: 1.5rem; max-width: 640px; }
@@ -9,6 +9,6 @@ app-movie-form { display: block; margin-bottom: 1.5rem; max-width: 640px; }
 .generos { color: var(--muted); font-size: .9rem; }
 .inactiva { opacity: .55; }
 .estado-tag { white-space: nowrap; font-size: .8rem; padding: .2rem .6rem; border-radius: 999px; background: var(--surface-2); color: var(--muted); }
-.estado-tag.on { background: rgba(76, 175, 125, .15); color: #7fdcaa; }
+.estado-tag.on { background: var(--ok-soft); color: var(--ok); }
 .acciones div { display: flex; gap: .4rem; justify-content: flex-end; }
 .estado { color: var(--muted); }

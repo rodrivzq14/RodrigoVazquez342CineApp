@@ -16,16 +16,16 @@
 
 .entradas { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
 .entrada { display: grid; grid-template-columns: 1fr auto; gap: 1rem; background: var(--surface); border-radius: var(--radius); padding: 1.2rem; border-left: 6px solid var(--accent); }
-.entrada[data-tipo='vip'] { border-left-color: #c084fc; }
-.entrada[data-tipo='accesible'] { border-left-color: #4aa3e8; }
+.entrada[data-tipo='vip'] { border-left-color: var(--vip); }
+.entrada[data-tipo='accesible'] { border-left-color: var(--accesible); }
 .entrada h2 { font-size: 1.8rem; }
 .fecha { color: var(--accent); text-transform: capitalize; }
 .butaca { margin-top: .5rem; }
 .butaca strong { font-size: 1.4rem; }
 .tag { font-style: normal; font-size: .7rem; padding: .1rem .5rem; border-radius: 999px; margin-left: .4rem; font-weight: 700; }
-.tag.vip { background: #c084fc; color: #1a0a26; }
-.tag.acc { background: #4aa3e8; color: #06202f; }
-.aviso-edad { background: rgba(200, 50, 60, .15); color: #ff8a92; padding: .5rem .7rem; border-radius: 8px; margin-top: .6rem; font-size: .85rem; }
+.tag.vip { background: var(--vip); color: var(--on-accent); }
+.tag.acc { background: var(--accesible); color: var(--on-accent); }
+.aviso-edad { background: var(--danger-soft); color: var(--danger); padding: .5rem .7rem; border-radius: 8px; margin-top: .6rem; font-size: .85rem; }
 .qr { display: flex; flex-direction: column; align-items: center; gap: .3rem; }
 .qr img { width: 150px; height: 150px; border-radius: 8px; background: white; }
 .qr small { color: var(--muted); }

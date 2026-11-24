@@ -1,11 +1,11 @@
 .page { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
-.cabecera h1 { font-size: 2.8rem; color: var(--accent); line-height: 1; }
+.cabecera h1 { font-size: 2.8rem; color: var(--text); line-height: 1; }
 .cabecera p { color: var(--muted); margin-top: .3rem; }
 
 .saldos { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
 .saldo { background: var(--surface); border-radius: var(--radius); padding: 1.2rem; display: flex; flex-direction: column; gap: .2rem; }
 .saldo span { color: var(--muted); font-size: .9rem; }
-.saldo strong { font-family: var(--font-title); font-size: 2.6rem; font-weight: 400; color: var(--accent); line-height: 1; }
+.saldo strong { font-family: var(--font-title); font-size: 2.6rem; font-weight: 600; color: var(--accent); line-height: 1; }
 .saldo small { color: var(--muted); font-size: .8rem; }
 
 section h2 { font-size: 1.8rem; margin: 1.5rem 0 .8rem; }
@@ -19,7 +19,7 @@ section h2 { font-size: 1.8rem; margin: 1.5rem 0 .8rem; }
 .acciones { display: flex; flex-direction: column; gap: .4rem; }
 .acciones a { text-decoration: none; text-align: center; }
 .compra.cancelada { opacity: .6; }
-.tag { display: inline-block; margin-top: .3rem; font-size: .75rem; padding: .1rem .5rem; border-radius: 999px; background: rgba(200, 50, 60, .2); color: #ff8a92; }
+.tag { display: inline-block; margin-top: .3rem; font-size: .75rem; padding: .1rem .5rem; border-radius: 999px; background: var(--danger-soft); color: var(--danger); }
 
 @media (max-width: 560px) {
   .saldos { grid-template-columns: 1fr; }

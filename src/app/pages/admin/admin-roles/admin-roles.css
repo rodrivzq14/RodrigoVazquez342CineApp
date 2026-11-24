@@ -1,5 +1,5 @@
 .encabezado { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: .4rem; }
-.encabezado h1 { font-size: 2.4rem; color: var(--accent); }
+.encabezado h1 { font-size: 2.4rem; color: var(--text); }
 .encabezado .btn { width: auto; }
 .ayuda { color: var(--muted); font-size: .9rem; margin-bottom: 1.2rem; }
 

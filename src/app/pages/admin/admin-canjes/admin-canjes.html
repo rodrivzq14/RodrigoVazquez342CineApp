@@ -24,7 +24,7 @@
     <tbody>
       @for (r of recompensas(); track r.id) {
         <tr [class.pausada]="!r.activo">
-          <td>{{ r.tipo === 'entrada' ? '🎟️' : '🍿' }} {{ r.nombre }}</td>
+          <td>{{ r.nombre }} <small class="tipo">{{ r.tipo === 'entrada' ? 'entrada' : 'candy' }}</small></td>
           <td>
             <input #pts type="number" min="1" class="puntos" [value]="r.puntos" [attr.aria-label]="'Puntos de ' + r.nombre"
                    (change)="cambiarPuntos(r, pts.value)" />

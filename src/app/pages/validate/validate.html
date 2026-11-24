@@ -3,16 +3,16 @@
 
   <div class="modos" role="tablist">
     <button type="button" role="tab" [class.activo]="modo() === 'sala'" [attr.aria-selected]="modo() === 'sala'"
-            (click)="cambiarModo('sala')">🎬 Entrada a sala</button>
+            (click)="cambiarModo('sala')">Entrada a sala</button>
     <button type="button" role="tab" [class.activo]="modo() === 'candy'" [attr.aria-selected]="modo() === 'candy'"
-            (click)="cambiarModo('candy')">🍿 Candy bar</button>
+            (click)="cambiarModo('candy')">Candy bar</button>
   </div>
 
   <section class="card">
     <div id="lector" [class.oculto]="!camaraActiva()"></div>
 
     @if (!camaraActiva()) {
-      <button type="button" class="btn" (click)="prenderCamara()">📷 Escanear QR con la cámara</button>
+      <button type="button" class="btn" (click)="prenderCamara()">Escanear QR con la cámara</button>
     } @else {
       <button type="button" class="btn secundario" (click)="apagarCamara()">Apagar cámara</button>
     }

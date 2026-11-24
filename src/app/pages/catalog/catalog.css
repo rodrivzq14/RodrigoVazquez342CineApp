@@ -1,5 +1,5 @@
 .page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
-.hero h1 { font-size: 3.4rem; color: var(--accent); line-height: 1; }
+.hero h1 { font-size: 3.4rem; color: var(--text); line-height: 1; }
 .hero p { color: var(--muted); margin: .4rem 0 1.5rem; }
 
 .top { margin-bottom: 2.5rem; }
@@ -18,10 +18,16 @@
   transition: background .15s, transform .15s;
 }
 .chip:hover { transform: translateY(-2px); }
-.chip.activo { background: var(--accent); color: #1a1206; font-weight: 700; }
+.chip.activo { background: var(--accent); color: var(--on-accent); font-weight: 700; }
 .chip.limpiar { background: transparent; border-color: var(--muted); color: var(--muted); }
 
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.5rem; }
 
 .estado { color: var(--muted); grid-column: 1 / -1; padding: 2rem 0; }
 .proponer { text-align: center; color: var(--muted); margin-top: 2.5rem; }
+
+@media (max-width: 560px) {
+  .hero h1 { font-size: 2.6rem; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .top .grid { gap: .6rem; }
+}

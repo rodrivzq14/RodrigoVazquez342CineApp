@@ -43,7 +43,7 @@
             }
             @if (auth.isLoggedIn()) {
               <button type="button" class="btn-chico" (click)="toggleAlerta()">
-                {{ tengoAlerta() ? '🔕 Ya no me avises' : '🔔 Avisame cuando haya entradas' }}
+                {{ tengoAlerta() ? 'Ya no me avises' : 'Avisame cuando haya entradas' }}
               </button>
             } @else {
               <span><a routerLink="/login" [queryParams]="{ volver: '/pelicula/' + m.id }">Iniciá sesión</a> para que te avisemos cuando salgan las entradas.</span>
