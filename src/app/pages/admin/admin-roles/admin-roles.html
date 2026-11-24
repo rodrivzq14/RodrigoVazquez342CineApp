@@ -81,7 +81,12 @@
             <strong>{{ u.nombre }}</strong>
             <small>{{ u.email }}</small>
           </td>
-          <td>{{ u.role }}</td>
+          <td>
+            <select #tipo (change)="cambiarTipo(u, tipo.value)" [attr.aria-label]="'Tipo de ' + u.email">
+              <option value="cliente" [selected]="u.role === 'cliente'">Cliente</option>
+              <option value="empleado" [selected]="u.role === 'empleado'">Empleado</option>
+            </select>
+          </td>
           <td>
             <select #sel (change)="asignar(u, sel.value)" [attr.aria-label]="'Rol de ' + u.email">
               <option value="" [selected]="!u.rol_personalizado_id">Sin rol</option>

@@ -100,6 +100,19 @@ export class AdminRoles {
     }
   }
 
+  async cambiarTipo(u: UsuarioConRol, tipo: string) {
+    if (tipo !== 'cliente' && tipo !== 'empleado') return;
+    this.mensaje.set('');
+    this.error.set('');
+    try {
+      await this.rolesService.cambiarTipo(u.id, tipo);
+      this.usuarios.update((lista) => lista.map((x) => (x.id === u.id ? { ...x, role: tipo } : x)));
+      this.mensaje.set(`${u.email} ahora es ${tipo}`);
+    } catch (e: any) {
+      this.error.set(e.message ?? 'No se pudo cambiar el tipo');
+    }
+  }
+
   async asignar(u: UsuarioConRol, valor: string) {
     const rolId = valor ? Number(valor) : null;
     this.mensaje.set('');

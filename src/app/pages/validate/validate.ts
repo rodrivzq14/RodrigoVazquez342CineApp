@@ -86,7 +86,13 @@ export class Validate {
         } catch (e: any) {
           // Si no es el código de una entrada, puede ser un canje de puntos
           if (!e.message?.includes('No existe ninguna entrada')) throw e;
-          this.canje.set(await this.canjes.validar(codigo));
+          try {
+            this.canje.set(await this.canjes.validar(codigo));
+          } catch (e2: any) {
+            // si tampoco es un canje, el mensaje tiene que hablar de los dos
+            if (e2.message?.includes('No existe ningún canje')) throw new Error('No existe ninguna entrada ni canje con ese código');
+            throw e2;
+          }
         }
       }
       this.form.reset();

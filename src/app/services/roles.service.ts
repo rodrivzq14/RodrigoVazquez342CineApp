@@ -39,6 +39,12 @@ export class RolesService {
     return (data ?? []) as UsuarioConRol[];
   }
 
+  /** Cliente o empleado (los empleados validan QR en la puerta y en el candy) */
+  async cambiarTipo(userId: string, tipo: 'cliente' | 'empleado'): Promise<void> {
+    const { error } = await this.supabase.rpc('asignar_tipo_usuario', { p_user: userId, p_tipo: tipo });
+    if (error) throw error;
+  }
+
   /** rolId = null le saca el rol personalizado */
   async asignar(userId: string, rolId: number | null): Promise<void> {
     const { error } = await this.supabase.rpc('asignar_rol', { p_user: userId, p_rol: rolId });
