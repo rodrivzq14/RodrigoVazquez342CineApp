@@ -1,0 +1,94 @@
+<header class="encabezado">
+  <h1>Reportes</h1>
+  <div class="exportar">
+    <button type="button" class="btn-chico" [disabled]="cargando()" (click)="exportarPdf()">⬇ PDF</button>
+    <button type="button" class="btn-chico" [disabled]="cargando()" (click)="exportarExcel()">⬇ Excel</button>
+  </div>
+</header>
+
+<div class="filtros">
+  <div class="chips">
+    <button type="button" class="chip" (click)="rangoRapido(7)">Últimos 7 días</button>
+    <button type="button" class="chip" (click)="rangoRapido(30)">Últimos 30 días</button>
+    <button type="button" class="chip" (click)="rangoRapido('mes')">Este mes</button>
+  </div>
+  <label>Desde <input #d type="date" [value]="desde()" (change)="cambiarFecha('desde', d.value)" /></label>
+  <label>Hasta <input #h type="date" [value]="hasta()" (change)="cambiarFecha('hasta', h.value)" /></label>
+</div>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+
+<section class="tarjetas" [class.cargando]="cargando()">
+  <div class="tarjeta">
+    <span>Facturación</span>
+    <strong>{{ totales().facturacion | currency: 'ARS' : '$' : '1.0-0' }}</strong>
+    @if (totales().credito > 0) {
+      <small>+ {{ totales().credito | currency: 'ARS' : '$' : '1.0-0' }} pagado con crédito</small>
+    }
+  </div>
+  <div class="tarjeta">
+    <span>Entradas vendidas</span>
+    <strong>{{ totales().entradas | number }}</strong>
+  </div>
+  <div class="tarjeta">
+    <span>Compras</span>
+    <strong>{{ totales().compras | number }}</strong>
+  </div>
+  <div class="tarjeta">
+    <span>Producto más vendido</span>
+    <strong class="chico">{{ candy()[0]?.producto ?? '—' }}</strong>
+    @if (candy()[0]; as c) { <small>{{ c.unidades }} unidades</small> }
+  </div>
+</section>
+
+<section class="card">
+  <h2>Facturación por día</h2>
+  <div class="tabla-scroll">
+    <table class="tabla">
+      <thead>
+        <tr>
+          <th>Día</th>
+          <th>Compras</th>
+          <th>Entradas</th>
+          <th>Facturación</th>
+          <th>Pagado con crédito</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (d of diasConVentas(); track d.dia) {
+          <tr>
+            <td class="dia">{{ d.dia | fechaAr: 'dia' }}</td>
+            <td>{{ d.compras }}</td>
+            <td>{{ d.entradas }}</td>
+            <td>{{ d.facturacion | currency: 'ARS' : '$' : '1.0-0' }}</td>
+            <td>{{ d.credito_usado | currency: 'ARS' : '$' : '1.0-0' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5" class="vacio">No hubo ventas en este período.</td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<div class="graficos">
+  <section class="card">
+    <header class="titulo-grafico">
+      <h2>Películas más vistas</h2>
+      <div class="chips">
+        <button type="button" class="chip" [class.activo]="agrupar() === 'week'" (click)="cambiarAgrupar('week')">Por semana</button>
+        <button type="button" class="chip" [class.activo]="agrupar() === 'month'" (click)="cambiarAgrupar('month')">Por mes</button>
+      </div>
+    </header>
+    <div class="lienzo" [class.oculto]="!masVistas().length"><canvas #lienzoPeliculas></canvas></div>
+    @if (!masVistas().length) { <p class="vacio">Sin entradas vendidas para funciones de este período.</p> }
+  </section>
+
+  <section class="card">
+    <h2>Candy más vendido</h2>
+    <div class="lienzo" [class.oculto]="!candy().length"><canvas #lienzoCandy></canvas></div>
+    @if (!candy().length) { <p class="vacio">No se vendió candy en este período.</p> }
+  </section>
+</div>

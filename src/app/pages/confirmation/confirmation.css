@@ -35,3 +35,4 @@
 .estado { color: var(--muted); }
 
 @media (max-width: 560px) { .entrada { grid-template-columns: 1fr; } .qr { align-items: flex-start; } }
+.pdf-btn { margin-bottom: .8rem; }

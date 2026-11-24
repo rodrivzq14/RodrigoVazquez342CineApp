@@ -53,6 +53,16 @@ export const ADMIN_ROUTES: Routes = [
         loadComponent: () => import('./admin-canjes/admin-canjes').then(m => m.AdminCanjes),
       },
       {
+        path: 'reportes',
+        canMatch: [permisoGuard('reportes')],
+        loadComponent: () => import('./admin-reportes/admin-reportes').then(m => m.AdminReportes),
+      },
+      {
+        path: 'salas',
+        canMatch: [permisoGuard('salas')],
+        loadComponent: () => import('./admin-salas/admin-salas').then(m => m.AdminSalas),
+      },
+      {
         path: 'actividad',
         canMatch: [permisoGuard('actividad')],
         loadComponent: () => import('./admin-log/admin-log').then(m => m.AdminLog),

@@ -75,6 +75,9 @@
       }
     </section>
 
+    @if (o.estado === 'pagada') {
+      <button type="button" class="btn pdf-btn" (click)="descargarPdf()">⬇ Descargar entradas en PDF</button>
+    }
     <a routerLink="/" class="btn volver-btn">Volver a la cartelera</a>
   }
 </main>

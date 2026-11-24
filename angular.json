@@ -28,7 +28,12 @@
               "src/styles.css"
             ],
             "allowedCommonJsDependencies": [
-              "qrcode"
+              "qrcode",
+              "exceljs",
+              "html2canvas",
+              "raf",
+              "rgbcolor",
+              "core-js"
             ]
           },
           "configurations": {

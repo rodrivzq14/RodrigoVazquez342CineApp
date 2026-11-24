@@ -1,0 +1,25 @@
+.encabezado { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+h1 { font-size: 2.4rem; color: var(--accent); }
+h2 { font-size: 1.5rem; margin-bottom: .8rem; }
+.exportar { display: flex; gap: .5rem; }
+
+.filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
+.filtros label { display: flex; align-items: center; gap: .4rem; color: var(--muted); font-size: .9rem; }
+.filtros input { padding: .4rem .6rem; }
+
+.tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.tarjetas.cargando { opacity: .5; }
+.tarjeta { background: var(--surface); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: .2rem; }
+.tarjeta span, .tarjeta small { color: var(--muted); font-size: .85rem; }
+.tarjeta strong { font-family: var(--font-title); font-size: 2.2rem; font-weight: 400; color: var(--accent); line-height: 1.1; }
+.tarjeta strong.chico { font-size: 1.5rem; }
+
+.card { padding: 1.2rem; margin-bottom: 1.5rem; }
+.dia { text-transform: capitalize; }
+.vacio { color: var(--muted); }
+
+.graficos { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; }
+.titulo-grafico { display: flex; justify-content: space-between; align-items: center; gap: .5rem; flex-wrap: wrap; margin-bottom: .6rem; }
+.titulo-grafico h2 { margin: 0; }
+.lienzo { position: relative; height: 280px; }
+.lienzo.oculto { display: none; }

@@ -1,0 +1,23 @@
+h1 { font-size: 2.4rem; color: var(--accent); }
+.ayuda { color: var(--muted); font-size: .9rem; margin: .4rem 0 1.2rem; max-width: 760px; line-height: 1.5; }
+
+.salas { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.sala { background: var(--surface); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: .5rem; }
+.sala.inactiva { opacity: .55; }
+.sala header { display: flex; justify-content: space-between; align-items: center; }
+.sala h2 { font-size: 1.6rem; }
+.sala ul { list-style: none; padding: 0; margin: 0; font-size: .9rem; }
+.sala li { display: flex; align-items: center; gap: .5rem; }
+.punto { width: 10px; height: 10px; border-radius: 3px; }
+.punto.normal { background: var(--surface-2); border: 1px solid var(--muted); }
+.punto.vip { background: #c084fc; }
+.punto.accesible { background: #4aa3e8; }
+.total { color: var(--muted); font-size: .85rem; }
+.sala .btn-chico { align-self: flex-start; }
+.estado-tag { font-size: .75rem; padding: .15rem .6rem; border-radius: 999px; background: var(--surface-2); color: var(--muted); }
+.estado-tag.on { background: rgba(76, 175, 125, .15); color: #7fdcaa; }
+
+.card { padding: 1.2rem; max-width: 520px; }
+.card h2 { font-size: 1.4rem; margin-bottom: .8rem; }
+.fila { display: flex; gap: .6rem; }
+.fila input { flex: 1; }

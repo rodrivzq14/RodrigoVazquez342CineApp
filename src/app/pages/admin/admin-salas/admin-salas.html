@@ -1,0 +1,40 @@
+<h1>Salas</h1>
+<p class="ayuda">
+  Todas las salas tienen la misma forma: filas A a T (la K se sacó para hacer la fila J de butacas accesibles),
+  4 + 20 + 4 butacas por fila, y las últimas tres filas (R, S y T) son VIP.
+  Una sala desactivada no recibe funciones nuevas en la asignación automática.
+</p>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+@if (mensaje()) {
+  <div class="ok-box">{{ mensaje() }}</div>
+}
+
+<section class="salas">
+  @for (s of salas(); track s.id) {
+    <article class="sala" [class.inactiva]="!s.activa">
+      <header>
+        <h2>{{ s.nombre }}</h2>
+        <span class="estado-tag" [class.on]="s.activa">{{ s.activa ? 'Activa' : 'Desactivada' }}</span>
+      </header>
+      <ul>
+        <li><span class="punto normal"></span>{{ s.normales }} normales</li>
+        <li><span class="punto vip"></span>{{ s.vip }} VIP</li>
+        <li><span class="punto accesible"></span>{{ s.accesibles }} accesibles</li>
+      </ul>
+      <p class="total">{{ s.normales + s.vip + s.accesibles }} butacas · {{ s.funciones }} función(es) por delante</p>
+      <button type="button" class="btn-chico" (click)="toggleActiva(s)">{{ s.activa ? 'Desactivar' : 'Activar' }}</button>
+    </article>
+  }
+</section>
+
+<form class="card" [formGroup]="form" (ngSubmit)="crear()">
+  <h2>Nueva sala</h2>
+  <div class="fila">
+    <input formControlName="nombre" placeholder="Sala 4" aria-label="Nombre de la sala"
+           [class.invalid]="form.controls.nombre.touched && form.controls.nombre.invalid" />
+    <button type="submit" class="btn-chico" [disabled]="creando()">{{ creando() ? 'Creando...' : 'Crear sala' }}</button>
+  </div>
+</form>

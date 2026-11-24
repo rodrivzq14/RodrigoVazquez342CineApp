@@ -19,7 +19,11 @@
     "@angular/router": "^22.1.0",
     "@angular/service-worker": "^22.2.0",
     "@supabase/supabase-js": "^2.117.2",
+    "chart.js": "^4.6.2",
+    "exceljs": "^4.4.0",
     "html5-qrcode": "^2.3.8",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9",
     "qrcode": "^1.5.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
