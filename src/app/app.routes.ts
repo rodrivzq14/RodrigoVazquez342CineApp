@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
-import { roleGuard } from './guards/role-guard';
+import { panelGuard, permisoGuard } from './guards/permiso-guard';
 
 export const routes: Routes = [
   {
@@ -37,13 +37,18 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/confirmation/confirmation').then(m => m.Confirmation),
   },
   {
+    path: 'propuestas',
+    canMatch: [authGuard],
+    loadComponent: () => import('./pages/propuestas/propuestas').then(m => m.Propuestas),
+  },
+  {
     path: 'admin',
-    canMatch: [roleGuard(['admin'])],
+    canMatch: [panelGuard],
     loadChildren: () => import('./pages/admin/admin.routes').then(m => m.ADMIN_ROUTES),
   },
   {
     path: 'validar',
-    canMatch: [roleGuard(['empleado', 'admin'])],
+    canMatch: [permisoGuard('validar')],
     loadComponent: () => import('./pages/validate/validate').then(m => m.Validate),
   },
   { 

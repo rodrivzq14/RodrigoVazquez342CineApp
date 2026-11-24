@@ -1,0 +1,17 @@
+.page { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+h1 { font-size: 2.6rem; color: var(--accent); line-height: 1; }
+h2 { font-size: 1.6rem; margin-bottom: .6rem; }
+.ayuda { color: var(--muted); margin: .5rem 0 1.2rem; }
+.estado { color: var(--muted); }
+.card { padding: 1.5rem; }
+textarea { resize: vertical; }
+.pendiente p { color: var(--muted); margin-bottom: 1rem; line-height: 1.5; }
+
+.historial { margin-top: 2rem; }
+.propuesta { background: var(--surface); border-radius: var(--radius); padding: .9rem 1.1rem; margin-bottom: .6rem; }
+.propuesta header { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
+.propuesta small { color: var(--muted); font-size: .8rem; }
+.respuesta { color: var(--muted); font-size: .9rem; margin: .4rem 0; }
+.estado-tag { font-size: .75rem; padding: .15rem .6rem; border-radius: 999px; background: var(--surface-2); color: var(--muted); text-transform: capitalize; }
+.estado-tag[data-estado='aceptada'] { background: rgba(76, 175, 125, .15); color: #7fdcaa; }
+.estado-tag[data-estado='rechazada'] { background: rgba(200, 50, 60, .15); color: #ff8a92; }

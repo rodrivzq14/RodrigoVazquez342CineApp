@@ -1,4 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { MovieService } from '../../../services/movie.service';
 import { MovieForm } from '../../../components/movie-form/movie-form';
 import { Genre, Movie } from '../../../models/movie';
@@ -9,8 +10,9 @@ import { Genre, Movie } from '../../../models/movie';
   styleUrl: './admin-movies.css',
   templateUrl: './admin-movies.html',
 })
-export class AdminMovies {
+export class AdminMovies implements OnInit {
   private movieService = inject(MovieService);
+  private router = inject(Router);
 
   readonly movies = signal<Movie[]>([]);
   readonly generos = signal<Genre[]>([]);
@@ -21,10 +23,19 @@ export class AdminMovies {
   // undefined = form cerrado, null = película nueva, Movie = editando esa
   readonly editando = signal<Movie | null | undefined>(undefined);
 
+  // Query params (withComponentInputBinding): vienen de aceptar una propuesta
+  readonly titulo = input<string>();
+  readonly sinopsis = input<string>();
+  readonly borrador = computed(() => (this.titulo() ? { titulo: this.titulo()!, sinopsis: this.sinopsis() ?? '' } : null));
+
   readonly filtradas = computed(() => {
     const t = this.texto().trim().toLowerCase();
     return this.movies().filter((m) => m.titulo.toLowerCase().includes(t));
   });
+
+  ngOnInit() {
+    if (this.borrador()) this.editando.set(null); // abre el formulario de película nueva
+  }
 
   constructor() {
     this.cargar();
@@ -45,8 +56,14 @@ export class AdminMovies {
     }
   }
 
-  async alGuardar() {
+  /** Cierra el formulario y, si venía de una propuesta, limpia los datos de la URL */
+  cerrar() {
     this.editando.set(undefined);
+    if (this.titulo()) this.router.navigate([], { queryParams: {} });
+  }
+
+  async alGuardar() {
+    this.cerrar();
     await this.cargar();
   }
 

@@ -3,8 +3,9 @@
     <h2>Administración</h2>
     <nav>
       @for (s of secciones; track s.ruta) {
-        <a [routerLink]="s.ruta" routerLinkActive="activo">{{ s.nombre }}</a>
+        <a *appSiPermiso="s.permiso" [routerLink]="s.ruta" routerLinkActive="activo">{{ s.nombre }}</a>
       }
+      <a *appSiRol="['admin']" routerLink="roles" routerLinkActive="activo">Roles</a>
     </nav>
   </aside>
 

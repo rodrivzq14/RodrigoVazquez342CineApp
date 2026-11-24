@@ -24,3 +24,4 @@
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.5rem; }
 
 .estado { color: var(--muted); grid-column: 1 / -1; padding: 2rem 0; }
+.proponer { text-align: center; color: var(--muted); margin-top: 2.5rem; }

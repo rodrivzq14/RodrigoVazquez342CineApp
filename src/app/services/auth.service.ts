@@ -2,6 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { Session } from '@supabase/supabase-js';
 import { SupabaseService } from './supabase.service';
 import { Profile } from '../models/profile';
+import { PERMISOS, Permiso } from '../models/permisos';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -12,6 +13,25 @@ export class AuthService {
 
   readonly isLoggedIn = computed(() => this.session() !== null);
   readonly role = computed(() => this.profile()?.role ?? null);
+
+  // Qué secciones puede usar: el admin todas, el empleado validar QR,
+  // y además lo que le dé su rol personalizado (si tiene)
+  readonly permisos = computed<Set<Permiso>>(() => {
+    const p = this.profile();
+    if (!p) return new Set();
+    if (p.role === 'admin') return new Set(PERMISOS.map((x) => x.valor));
+
+    const permisos = new Set<Permiso>(p.roles_personalizados?.permisos ?? []);
+    if (p.role === 'empleado') permisos.add('validar');
+    return permisos;
+  });
+
+  /** Entra al panel si tiene al menos una sección del admin (validar QR no cuenta, es otra pantalla) */
+  readonly entraAlPanel = computed(() => [...this.permisos()].some((p) => p !== 'validar'));
+
+  puede(permiso: Permiso): boolean {
+    return this.permisos().has(permiso);
+  }
 
   /** Los guards esperan a esta promesa antes de decidir */
   readonly ready: Promise<void>;
@@ -38,11 +58,17 @@ export class AuthService {
   }
 
   private async loadProfile(userId: string): Promise<void> {
-    const { data } = await this.supabase
+    // Traemos también el rol personalizado (nombre y permisos)
+    let { data, error } = await this.supabase
       .from('profiles')
-      .select('*')
+      .select('*, roles_personalizados(nombre, permisos)')
       .eq('id', userId)
       .single();
+
+    // Si la base todavía no tiene los roles personalizados, que el login siga andando
+    if (error) {
+      ({ data } = await this.supabase.from('profiles').select('*').eq('id', userId).single());
+    }
     this.profile.set(data as Profile | null);
   }
 

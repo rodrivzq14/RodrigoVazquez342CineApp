@@ -3,6 +3,7 @@ import { MovieService } from '../../services/movie.service';
 import { ReviewService } from '../../services/review.service';
 import { Genre, Movie } from '../../models/movie';
 import { Rating } from '../../models/review';
+import { RouterLink } from '@angular/router';
 import { MovieCard } from '../../components/movie-card/movie-card';
 
 // "Órbita" -> "orbita", así buscar "orbita" u "orb" la encuentra igual
@@ -12,7 +13,7 @@ function sinAcentos(texto: string): string {
 
 @Component({
   selector: 'app-catalog',
-  imports: [MovieCard],
+  imports: [MovieCard, RouterLink],
   templateUrl: './catalog.html',
   styleUrl: './catalog.css',
 })

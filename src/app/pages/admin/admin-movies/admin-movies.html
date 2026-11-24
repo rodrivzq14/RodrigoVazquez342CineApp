@@ -8,9 +8,10 @@
 @if (editando() !== undefined) {
   <app-movie-form
     [movie]="editando() ?? null"
+    [borrador]="borrador()"
     [generos]="generos()"
     (guardado)="alGuardar()"
-    (cancelado)="editando.set(undefined)" />
+    (cancelado)="cerrar()" />
 }
 
 @if (error()) {

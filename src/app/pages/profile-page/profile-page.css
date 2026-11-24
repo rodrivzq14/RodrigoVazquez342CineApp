@@ -28,3 +28,4 @@ section h2 { font-size: 1.8rem; margin: 1.5rem 0 .8rem; }
   .acciones { grid-column: 1 / -1; flex-direction: row; }
 }
 .guardada { color: var(--ok) !important; font-weight: 700; }
+.proponer { display: inline-block; margin-top: .5rem; font-size: .9rem; }

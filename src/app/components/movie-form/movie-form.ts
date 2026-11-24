@@ -18,6 +18,8 @@ export class MovieForm {
   private movieService = inject(MovieService);
 
   readonly movie = input<Movie | null>(null);
+  // Para una película nueva: datos para precargar (vienen de una propuesta aceptada)
+  readonly borrador = input<{ titulo: string; sinopsis: string } | null>(null);
   readonly generos = input.required<Genre[]>();
 
   readonly guardado = output<void>();
@@ -55,6 +57,8 @@ export class MovieForm {
         this.elegidos.set(new Set(m.generos.map((g) => g.id)));
       } else {
         this.form.reset();
+        const b = this.borrador();
+        if (b) this.form.patchValue({ titulo: b.titulo, sinopsis: b.sinopsis });
         this.elegidos.set(new Set());
       }
     });

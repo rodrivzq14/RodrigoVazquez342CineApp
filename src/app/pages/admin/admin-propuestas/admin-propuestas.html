@@ -1,0 +1,40 @@
+<h1>Propuestas de clientes</h1>
+<p class="ayuda">Películas que los clientes quieren ver. Al aceptar una, se abre el alta de película con sus datos cargados.</p>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+
+<div class="chips">
+  @for (e of estados; track e.valor) {
+    <button type="button" class="chip" [class.activo]="filtro() === e.valor" (click)="filtro.set(e.valor)">
+      {{ e.nombre }}
+      @if (e.valor === 'pendiente' && cantidadPendientes()) { ({{ cantidadPendientes() }}) }
+    </button>
+  }
+</div>
+
+<section class="lista">
+  @for (p of filtradas(); track p.id) {
+    <article class="propuesta">
+      <header>
+        <h2>{{ p.titulo }}</h2>
+        <small>{{ p.autor }} · {{ p.email }} · {{ p.created_at | fechaAr: 'dia' }}</small>
+      </header>
+      <p><span class="label">De qué trata:</span> {{ p.descripcion }}</p>
+      <p><span class="label">Por qué la quiere ver:</span> {{ p.motivo }}</p>
+      @if (p.respuesta) {
+        <p><span class="label">Respuesta:</span> {{ p.respuesta }}</p>
+      }
+
+      @if (p.estado === 'pendiente') {
+        <div class="acciones">
+          <button type="button" class="btn-chico" [disabled]="procesando() === p.id" (click)="aceptar(p)">Aceptar y crear película</button>
+          <button type="button" class="btn-chico peligro" [disabled]="procesando() === p.id" (click)="rechazar(p)">Rechazar</button>
+        </div>
+      }
+    </article>
+  } @empty {
+    <p class="ayuda">No hay propuestas {{ filtro() === 'pendiente' ? 'pendientes' : filtro() + 's' }}.</p>
+  }
+</section>
