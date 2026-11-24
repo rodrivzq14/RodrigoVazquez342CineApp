@@ -48,4 +48,6 @@ export interface FuncionAdmin {
   idioma: string;
   titulo: string;
   sala: string;
+  estado: 'activa' | 'cancelada';
+  cancelada_motivo: string | null;
 }

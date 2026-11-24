@@ -4,6 +4,9 @@ import { RouterLink } from '@angular/router';
 import { SeatService } from '../../services/seat.service';
 import { ScreeningService } from '../../services/screening.service';
 import { SettingsService } from '../../services/settings.service';
+import { AuthService } from '../../services/auth.service';
+import { EsperaService, MiEspera } from '../../services/espera.service';
+import { FechaArPipe } from '../../pipes/fecha-ar-pipe';
 import { ScreeningDetail } from '../../models/screening';
 import { SeatMapItem, SeatTipo } from '../../models/seat';
 
@@ -14,7 +17,7 @@ const BLOQUES = ['izq', 'centro', 'der'];
 
 @Component({
   selector: 'app-seat-selection',
-  imports: [RouterLink, CurrencyPipe],
+  imports: [RouterLink, CurrencyPipe, FechaArPipe],
   templateUrl: './seat-selection.html',
   styleUrl: './seat-selection.css',
 })
@@ -22,6 +25,8 @@ export class SeatSelection implements OnInit {
   private seatService = inject(SeatService);
   private screeningService = inject(ScreeningService);
   private settings = inject(SettingsService);
+  private esperaService = inject(EsperaService);
+  readonly auth = inject(AuthService);
   private destroyRef = inject(DestroyRef);
 
   readonly id = input.required<string>();
@@ -32,6 +37,8 @@ export class SeatSelection implements OnInit {
   readonly cargando = signal(true);
   readonly error = signal('');
   readonly aviso = signal('');
+  readonly miEspera = signal<MiEspera | null>(null);
+  readonly anotando = signal(false);
   private ocupado = false;
 
   // Agrupa por fila y numera las butacas de corrido (A1...A28), sin importar el bloque
@@ -56,6 +63,11 @@ export class SeatSelection implements OnInit {
   readonly elegidas = computed(() =>
     this.filas().flatMap((f) => f.bloques.flat()).filter((b) => b.estado === 'mia'),
   );
+  // Agotada: no queda ninguna butaca libre (las mías no cuentan como ocupadas)
+  readonly agotada = computed(
+    () => this.seats().length > 0 && !this.seats().some((s) => s.estado === 'libre' || s.estado === 'mia'),
+  );
+
   readonly cantidadVip = computed(() => this.elegidas().filter((b) => b.tipo === 'vip').length);
   readonly total = computed(() =>
     this.elegidas().reduce((acc, b) => acc + this.precio(b.tipo), 0),
@@ -81,6 +93,9 @@ export class SeatSelection implements OnInit {
       }
       this.funcion.set(funcion);
       this.precios.set(precios);
+
+      await this.auth.ready;
+      if (this.auth.isLoggedIn()) await this.actualizarEspera();
       await this.recargar();
     } catch {
       this.error.set('No pudimos cargar la sala');
@@ -91,6 +106,8 @@ export class SeatSelection implements OnInit {
 
   private async recargar() {
     try {
+      // Si estoy esperando y justo me guardaron una butaca, la tomo antes de pedir el mapa
+      if (this.miEspera()?.estado === 'esperando') await this.actualizarEspera();
       this.seats.set(await this.seatService.getSeatMap(Number(this.id())));
     } catch {
       this.aviso.set('Problemas de conexión, reintentando...');
@@ -116,6 +133,36 @@ export class SeatSelection implements OnInit {
     } finally {
       this.ocupado = false;
     }
+  }
+
+  /** Consulta mi lugar en la lista y, si me avisaron, pasa la butaca guardada a esta pestaña */
+  private async actualizarEspera() {
+    const funcionId = Number(this.id());
+    try {
+      const espera = await this.esperaService.miEspera(funcionId);
+      if (espera?.estado === 'avisado') await this.esperaService.tomarReserva(funcionId);
+      this.miEspera.set(espera);
+    } catch {
+      // si falla, la página sigue andando sin la lista de espera
+    }
+  }
+
+  async anotarme() {
+    this.anotando.set(true);
+    this.aviso.set('');
+    try {
+      await this.esperaService.unirse(Number(this.id()));
+      await this.actualizarEspera();
+    } catch (e: any) {
+      this.aviso.set(e.message ?? 'No te pudimos anotar');
+    } finally {
+      this.anotando.set(false);
+    }
+  }
+
+  async salirDeLaLista() {
+    await this.esperaService.salir(Number(this.id()));
+    this.miEspera.set(null);
   }
 
   precio(tipo: SeatTipo): number {

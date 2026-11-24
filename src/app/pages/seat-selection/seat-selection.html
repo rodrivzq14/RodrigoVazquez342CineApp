@@ -29,6 +29,28 @@
       <div class="error-box">{{ aviso() }}</div>
     }
 
+    @if (miEspera()?.estado === 'avisado') {
+      <div class="espera guardada">
+        <strong>¡Te guardamos una butaca de la lista de espera!</strong>
+        <span>Es tuya hasta las {{ miEspera()!.vence_at | fechaAr: 'hora' }}. Completá la compra antes de que pase al siguiente.</span>
+      </div>
+    } @else if (agotada()) {
+      <div class="espera">
+        <strong>Función agotada</strong>
+        @if (miEspera(); as e) {
+          <span>Estás en la lista de espera, en el puesto <b>{{ e.posicion }}</b>. Si se libera una butaca te avisamos y te la guardamos 15 minutos.</span>
+          <button type="button" class="btn-chico" (click)="salirDeLaLista()">Salir de la lista</button>
+        } @else if (auth.isLoggedIn()) {
+          <span>Anotate en la lista de espera: si alguien cancela, te avisamos y te guardamos la butaca 15 minutos.</span>
+          <button type="button" class="btn" [disabled]="anotando()" (click)="anotarme()">
+            {{ anotando() ? 'Anotando...' : 'Anotarme en la lista de espera' }}
+          </button>
+        } @else {
+          <span><a routerLink="/login">Iniciá sesión</a> para anotarte en la lista de espera.</span>
+        }
+      </div>
+    }
+
     <div class="sala">
       <div class="pantalla">PANTALLA</div>
 

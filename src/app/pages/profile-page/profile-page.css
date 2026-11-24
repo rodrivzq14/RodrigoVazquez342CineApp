@@ -27,3 +27,4 @@ section h2 { font-size: 1.8rem; margin: 1.5rem 0 .8rem; }
   .compra img { width: 56px; }
   .acciones { grid-column: 1 / -1; flex-direction: row; }
 }
+.guardada { color: var(--ok) !important; font-weight: 700; }

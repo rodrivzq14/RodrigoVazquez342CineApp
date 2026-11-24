@@ -19,3 +19,8 @@ form .btn { margin-top: 1.2rem; }
 td small { display: block; color: var(--muted); }
 
 @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+tr.cancelada { opacity: .55; }
+tr.cancelada .hora { text-decoration: line-through; }
+.motivo { color: #ff8a92 !important; }
+.acciones div { display: flex; gap: .4rem; justify-content: flex-end; }
+.espera { color: var(--accent) !important; font-weight: 700; }

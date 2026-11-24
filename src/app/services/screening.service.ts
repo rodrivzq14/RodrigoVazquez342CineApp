@@ -11,6 +11,7 @@ export class ScreeningService {
       .from('screenings')
       .select('id, movie_id, room_id, starts_at, ends_at, formato, idioma, rooms(nombre)')
       .eq('movie_id', movieId)
+      .eq('estado', 'activa')
       .gte('starts_at', new Date().toISOString())
       .order('starts_at');
 
@@ -47,7 +48,7 @@ export class ScreeningService {
   async getProximas(): Promise<FuncionAdmin[]> {
     const { data, error } = await this.supabase
       .from('screenings')
-      .select('id, starts_at, formato, idioma, rooms(nombre), movies(titulo)')
+      .select('id, starts_at, formato, idioma, estado, cancelada_motivo, rooms(nombre), movies(titulo)')
       .gte('starts_at', new Date().toISOString())
       .order('starts_at')
       .limit(300);
@@ -61,6 +62,8 @@ export class ScreeningService {
       idioma: s.idioma,
       titulo: s.movies?.titulo ?? '',
       sala: s.rooms?.nombre ?? '',
+      estado: s.estado,
+      cancelada_motivo: s.cancelada_motivo,
     }));
   }
 
@@ -85,6 +88,13 @@ export class ScreeningService {
     const res = await this.supabase.rpc('generate_screenings', { p_schedule: horario.id });
     if (res.error) throw res.error;
     return res.data as ResultadoCarga;
+  }
+
+  /** Cancela la función entera y pasa todo lo vendido a crédito (ver cancelar_funcion en 07_...sql) */
+  async cancelar(id: number, motivo: string): Promise<{ compras: number; anonimas: number; credito_total: number }> {
+    const { data, error } = await this.supabase.rpc('cancelar_funcion', { p_screening: id, p_motivo: motivo });
+    if (error) throw error;
+    return data;
   }
 
   async eliminar(id: number): Promise<void> {

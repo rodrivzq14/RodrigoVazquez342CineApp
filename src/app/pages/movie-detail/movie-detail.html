@@ -38,6 +38,10 @@
     <section class="funciones">
       <h2>Funciones</h2>
 
+      @if (auth.profile()?.credito; as credito) {
+        <p class="credito">Tenés {{ credito | currency: 'ARS' : '$' : '1.0-0' }} de crédito: elegí una función y se descuenta al pagar.</p>
+      }
+
       @if (dias().length === 0) {
         <p class="estado">Todavía no hay funciones programadas para esta película.</p>
       } @else {

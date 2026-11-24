@@ -75,6 +75,7 @@ export interface MiCompra {
   credito_usado: number;
   estado: 'pagada' | 'cancelada';
   puntos_ganados: number;
+  movie_id: number;
   titulo: string;
   poster_url: string;
   starts_at: string;
@@ -82,4 +83,5 @@ export interface MiCompra {
   entradas: number;
   items_candy: number;
   cancelable: boolean;
+  funcion_cancelada: boolean; // la canceló el cine
 }

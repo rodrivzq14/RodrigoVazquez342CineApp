@@ -6,6 +6,7 @@
     <a *appSiRol="['admin']" routerLink="/admin">Admin</a>
 
     @if (auth.profile(); as p) {
+      <app-notificaciones />
       <a routerLink="/perfil">{{ p.nombre }}</a>
       <button type="button" class="salir" (click)="salir()">Salir</button>
     } @else {

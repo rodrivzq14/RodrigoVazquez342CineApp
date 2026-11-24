@@ -29,6 +29,29 @@
   @if (cargando()) {
     <p class="estado">Cargando tus compras...</p>
   } @else {
+    @if (esperas().length) {
+      <section>
+        <h2>Listas de espera</h2>
+        @for (e of esperas(); track e.screening_id) {
+          <article class="compra espera">
+            <img [src]="e.poster_url" alt="" />
+            <div class="datos">
+              <h3>{{ e.titulo }}</h3>
+              <p class="fecha">{{ e.starts_at | fechaAr: 'larga' }} · {{ e.sala }}</p>
+              @if (e.estado === 'avisado') {
+                <p class="detalle guardada">¡Te guardamos una butaca hasta las {{ e.vence_at | fechaAr: 'hora' }}!</p>
+              } @else {
+                <p class="detalle">Estás en el puesto <strong>{{ e.posicion }}</strong> de la lista</p>
+              }
+            </div>
+            <div class="acciones">
+              <a class="btn-chico" [routerLink]="['/funcion', e.screening_id]">{{ e.estado === 'avisado' ? 'Comprar' : 'Ver función' }}</a>
+            </div>
+          </article>
+        }
+      </section>
+    }
+
     <section>
       <h2>Próximas funciones</h2>
       @for (c of proximas(); track c.id) {
@@ -61,12 +84,18 @@
         · {{ c.total | currency: 'ARS' : '$' : '1.0-0' }}
         @if (c.credito_usado > 0) { (+ {{ c.credito_usado | currency: 'ARS' : '$' : '1.0-0' }} de crédito) }
       </p>
-      @if (c.estado === 'cancelada') {
+      @if (c.funcion_cancelada) {
+        <span class="tag">El cine suspendió la función</span>
+      } @else if (c.estado === 'cancelada') {
         <span class="tag">Cancelada</span>
       }
     </div>
     <div class="acciones">
-      <a class="btn-chico" [routerLink]="['/confirmacion', c.id]" [queryParams]="{ t: c.access_token }">Ver entradas</a>
+      @if (c.funcion_cancelada) {
+        <a class="btn-chico" [routerLink]="['/pelicula', c.movie_id]">Elegir otra función</a>
+      } @else {
+        <a class="btn-chico" [routerLink]="['/confirmacion', c.id]" [queryParams]="{ t: c.access_token }">Ver entradas</a>
+      }
       @if (c.cancelable) {
         <button type="button" class="btn-chico peligro" [disabled]="cancelando() === c.id" (click)="cancelar(c)">
           {{ cancelando() === c.id ? 'Cancelando...' : 'Cancelar' }}

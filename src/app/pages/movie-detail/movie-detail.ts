@@ -1,8 +1,10 @@
 import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MovieService } from '../../services/movie.service';
 import { ScreeningService } from '../../services/screening.service';
 import { ReviewService } from '../../services/review.service';
+import { AuthService } from '../../services/auth.service';
 import { Estrellas } from '../../components/estrellas/estrellas';
 import { Resenas } from '../../components/resenas/resenas';
 import { Movie } from '../../models/movie';
@@ -19,7 +21,7 @@ interface Dia {
 
 @Component({
   selector: 'app-movie-detail',
-  imports: [RouterLink, Estrellas, Resenas],
+  imports: [RouterLink, CurrencyPipe, Estrellas, Resenas],
   templateUrl: './movie-detail.html',
   styleUrl: './movie-detail.css',
 })
@@ -27,6 +29,7 @@ export class MovieDetail implements OnInit {
   private movieService = inject(MovieService);
   private screeningService = inject(ScreeningService);
   private reviewService = inject(ReviewService);
+  readonly auth = inject(AuthService);
 
   readonly id = input.required<string>(); // viene de la URL /pelicula/:id
 

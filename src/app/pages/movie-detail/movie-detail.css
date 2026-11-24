@@ -25,3 +25,4 @@
 .rating strong { font-size: 1.4rem; }
 .rating span { color: var(--muted); font-size: .9rem; }
 .rating.sin { color: var(--muted); font-size: .9rem; }
+.credito { background: rgba(76, 175, 125, .15); color: #7fdcaa; padding: .6rem .8rem; border-radius: 10px; margin-bottom: 1rem; font-size: .9rem; }

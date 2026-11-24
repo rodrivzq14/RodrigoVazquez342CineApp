@@ -1,0 +1,38 @@
+<button type="button" class="campana" (click)="abierto.set(!abierto())"
+        [attr.aria-label]="'Notificaciones, ' + servicio.sinLeer() + ' sin leer'" [attr.aria-expanded]="abierto()">
+  🔔
+  @if (servicio.sinLeer() > 0) {
+    <span class="badge">{{ servicio.sinLeer() > 9 ? '9+' : servicio.sinLeer() }}</span>
+  }
+</button>
+
+@if (abierto()) {
+  <div class="panel">
+    <header>
+      <strong>Notificaciones</strong>
+      @if (servicio.sinLeer() > 0) {
+        <button type="button" class="link" (click)="servicio.marcarTodas()">Marcar todas como leídas</button>
+      }
+    </header>
+
+    @if (servicio.permiso() === 'default') {
+      <button type="button" class="permiso" (click)="servicio.pedirPermiso()">
+        Activar avisos en este dispositivo
+      </button>
+    }
+
+    <ul>
+      @for (n of servicio.lista(); track n.id) {
+        <li>
+          <button type="button" class="item" [class.nueva]="!n.leida" (click)="abrir(n)">
+            <strong>{{ n.titulo }}</strong>
+            <span>{{ n.mensaje }}</span>
+            <small>{{ n.created_at | fechaAr }}</small>
+          </button>
+        </li>
+      } @empty {
+        <li class="vacio">No tenés notificaciones.</li>
+      }
+    </ul>
+  </div>
+}

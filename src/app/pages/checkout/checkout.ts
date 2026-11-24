@@ -91,6 +91,8 @@ export class Checkout implements OnInit {
       this.productos.set(productos);
       this.categorias.set(categorias);
 
+      // Si tiene crédito (por ejemplo, porque le cancelaron una función) arranca usándolo
+      if (quote.credito_disponible > 0) await this.toggleCredito(true);
     } catch (e: any) {
       this.errorQuote.set(e.message ?? 'No pudimos preparar tu compra');
     } finally {

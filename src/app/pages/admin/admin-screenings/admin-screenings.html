@@ -117,6 +117,13 @@
   <section class="card">
     <h2>Próximas funciones</h2>
 
+    @if (okLista()) {
+      <div class="ok-box">{{ okLista() }}</div>
+    }
+    @if (errorLista()) {
+      <div class="error-box">{{ errorLista() }}</div>
+    }
+
     @if (dias().length === 0) {
       <p class="ayuda">No hay funciones programadas.</p>
     } @else {
@@ -131,14 +138,29 @@
       <table class="tabla">
         <tbody>
           @for (f of diaActivo()!.funciones; track f.id) {
-            <tr>
+            <tr [class.cancelada]="f.estado === 'cancelada'">
               <td class="hora">{{ f.starts_at | fechaAr: 'hora' }}</td>
               <td>
                 <strong>{{ f.titulo }}</strong>
                 <small>{{ f.formato }} · {{ f.idioma }}</small>
+                @if (f.estado === 'cancelada') {
+                  <small class="motivo">Cancelada: {{ f.cancelada_motivo }}</small>
+                }
+                @if (enEspera().get(f.id); as cantidad) {
+                  <small class="espera">{{ cantidad }} en lista de espera</small>
+                }
               </td>
               <td>{{ f.sala }}</td>
-              <td><button type="button" class="btn-chico peligro" (click)="eliminar(f)">Eliminar</button></td>
+              <td class="acciones">
+                @if (f.estado === 'activa') {
+                  <div>
+                    <button type="button" class="btn-chico peligro" [disabled]="procesando() === f.id" (click)="cancelar(f)">
+                      {{ procesando() === f.id ? 'Cancelando...' : 'Cancelar' }}
+                    </button>
+                    <button type="button" class="btn-chico" (click)="eliminar(f)">Eliminar</button>
+                  </div>
+                }
+              </td>
             </tr>
           }
         </tbody>

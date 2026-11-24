@@ -3,6 +3,7 @@ import { CurrencyPipe, DecimalPipe, NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
+import { EsperaPerfil, EsperaService } from '../../services/espera.service';
 import { FechaArPipe } from '../../pipes/fecha-ar-pipe';
 import { MiCompra } from '../../models/order';
 
@@ -15,8 +16,10 @@ import { MiCompra } from '../../models/order';
 export class ProfilePage {
   readonly auth = inject(AuthService);
   private orders = inject(OrderService);
+  private esperaService = inject(EsperaService);
 
   readonly compras = signal<MiCompra[]>([]);
+  readonly esperas = signal<EsperaPerfil[]>([]);
   readonly cargando = signal(true);
   readonly error = signal('');
   readonly mensaje = signal('');
@@ -34,7 +37,9 @@ export class ProfilePage {
 
   private async cargar() {
     try {
-      this.compras.set(await this.orders.misCompras());
+      const [compras, esperas] = await Promise.all([this.orders.misCompras(), this.esperaService.misEsperas().catch(() => [])]);
+      this.compras.set(compras);
+      this.esperas.set(esperas);
     } catch {
       this.error.set('No pudimos cargar tus compras');
     } finally {
