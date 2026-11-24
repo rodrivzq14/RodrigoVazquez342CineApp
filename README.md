@@ -1,60 +1,67 @@
-# CineApp
+# El Proyector
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.5.
+TP de Programación IV (UTN). Es la página de un cine: se ve la cartelera, se eligen butacas en el mapa de la sala, se compran entradas y candy, y en la puerta se valida el QR. También tiene un panel para administrar todo.
 
-## Development server
+Deploy: https://cine-app-progra4.web.app
 
-To start a local development server, run:
+## Tecnologías
+
+- **Angular 22** (componentes standalone, signals)
+- **Supabase**: base de datos Postgres, login, realtime y funciones en SQL
+- **Firebase Hosting** para publicarlo
+- jspdf, exceljs y chart.js para los PDF, los Excel y los gráficos de los reportes
+- qrcode para generar los QR y html5-qrcode para leerlos con la cámara
+
+## Cómo correrlo
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+y entrar a `http://localhost:4200`. La URL y la key pública de Supabase están en `src/environments/environment.ts`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Para publicar:
 
 ```bash
 ng build
+firebase deploy --only hosting
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Qué se puede hacer
 
-## Running unit tests
+**Cualquiera (sin cuenta)**
+- Ver la cartelera, las más vistas, lo que viene (próximamente) y filtrar por género
+- Ver el detalle de una película con sus funciones y reseñas
+- Elegir butacas y comprar (las butacas quedan reservadas 5 minutos mientras se paga)
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+**Cliente**
+- Comprar entradas con combos y productos del candy, usando cupones
+- Sumar puntos (1 por cada peso) y canjearlos por entradas o productos
+- Ver sus compras, cancelar si falta tiempo, y bajar las entradas en PDF con el QR
+- Dejar reseñas, anotarse en la lista de espera de una función agotada y proponer películas
+- Recibir notificaciones (por ejemplo, si se cancela una función se le devuelve el crédito)
 
-```bash
-ng test
+**Empleado**
+- Validar entradas en la sala y entregar el candy escaneando el QR (o con el código a mano)
+
+**Administrador**
+- Películas, funciones (se programan varias de una y el sistema busca la sala libre), salas
+- Productos, combos, precios, cupones y canjes
+- Propuestas de los clientes, log de actividad
+- Reportes de facturación, películas y candy con gráficos, exportables a PDF y Excel
+- Roles: se pueden crear roles con permisos sueltos (por ejemplo un "Contador" que solo ve los reportes) y asignarlos a empleados
+
+## Estructura
+
 ```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
+src/app/
+  pages/        una carpeta por pantalla (catalog, movie-detail, seat-selection, checkout...)
+  pages/admin/  el panel, se carga aparte con loadChildren
+  components/   piezas que se repiten (navbar, movie-card, reseñas, notificaciones...)
+  services/     un servicio por tema, todos hablan con Supabase
+  guards/       auth, rol y permiso
+  directives/   *appSiRol y *appSiPermiso para mostrar/ocultar cosas según quién entra
+  pipes/        fechaAr, para mostrar las fechas en hora de Argentina
+  models/       interfaces de los datos
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-# RodrigoVazquez342CineApp
