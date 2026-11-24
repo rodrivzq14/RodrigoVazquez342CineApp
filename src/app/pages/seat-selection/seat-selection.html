@@ -16,6 +16,15 @@
       }
     </header>
 
+    @if (noDisponible()) {
+      <div class="error-box">{{ noDisponible() }}</div>
+      @if (!auth.isLoggedIn() && f.edad_minima > 0) {
+        <a routerLink="/login" [queryParams]="{ volver: '/funcion/' + f.id }" class="btn-chico">Iniciar sesión</a>
+      } @else {
+        <a [routerLink]="['/pelicula', f.movie_id]" class="btn-chico">Ver otras funciones</a>
+      }
+    } @else {
+
     <ul class="leyenda">
       <li><span class="butaca" data-estado="libre" data-tipo="normal"></span> Libre</li>
       <li><span class="butaca" data-estado="mia" data-tipo="normal"></span> Tu selección</li>
@@ -46,7 +55,7 @@
             {{ anotando() ? 'Anotando...' : 'Anotarme en la lista de espera' }}
           </button>
         } @else {
-          <span><a routerLink="/login">Iniciá sesión</a> para anotarte en la lista de espera.</span>
+          <span><a routerLink="/login" [queryParams]="{ volver: '/funcion/' + f.id }">Iniciá sesión</a> para anotarte en la lista de espera.</span>
         }
       </div>
     }
@@ -106,5 +115,6 @@
         <button type="button" class="btn" [routerLink]="['/compra', f.id]">Continuar</button>
       }
     </section>
+    }
   }
 </main>

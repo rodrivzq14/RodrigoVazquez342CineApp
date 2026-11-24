@@ -46,7 +46,7 @@
                 {{ tengoAlerta() ? '🔕 Ya no me avises' : '🔔 Avisame cuando haya entradas' }}
               </button>
             } @else {
-              <span><a routerLink="/login">Iniciá sesión</a> para que te avisemos cuando salgan las entradas.</span>
+              <span><a routerLink="/login" [queryParams]="{ volver: '/pelicula/' + m.id }">Iniciá sesión</a> para que te avisemos cuando salgan las entradas.</span>
             }
           </div>
         }

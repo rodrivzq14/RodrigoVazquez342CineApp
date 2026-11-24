@@ -20,6 +20,7 @@ export interface ScreeningDetail {
   sala: string;
   fecha_estreno: string | null;
   precio_preventa: number | null;
+  estado: 'activa' | 'cancelada';
 }
 
 export interface NuevasFunciones {

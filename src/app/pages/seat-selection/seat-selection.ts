@@ -16,6 +16,15 @@ type SeatView = SeatMapItem & { etiqueta: string };
 const ZONA = 'America/Argentina/Buenos_Aires';
 const BLOQUES = ['izq', 'centro', 'der'];
 
+// Años cumplidos a hoy ('2008-05-20' -> 18)
+function edad(nacimiento: string): number {
+  const n = new Date(nacimiento + 'T12:00:00');
+  const hoy = new Date();
+  let anios = hoy.getFullYear() - n.getFullYear();
+  if (hoy.getMonth() < n.getMonth() || (hoy.getMonth() === n.getMonth() && hoy.getDate() < n.getDate())) anios--;
+  return anios;
+}
+
 @Component({
   selector: 'app-seat-selection',
   imports: [RouterLink, CurrencyPipe, FechaArPipe],
@@ -66,6 +75,21 @@ export class SeatSelection implements OnInit {
     this.filas().flatMap((f) => f.bloques.flat()).filter((b) => b.estado === 'mia'),
   );
   // Agotada: no queda ninguna butaca libre (las mías no cuentan como ocupadas)
+  // Si la función ya pasó, la canceló el cine o no tiene la edad, no se muestra el mapa
+  // (la base igual lo controla al comprar, esto es para avisar antes de elegir butacas)
+  readonly noDisponible = computed(() => {
+    const f = this.funcion();
+    if (!f) return '';
+    if (f.estado === 'cancelada') return 'Esta función fue cancelada por el cine.';
+    if (new Date(f.starts_at) <= new Date()) return 'Esta función ya empezó, no se pueden comprar más entradas.';
+    if (f.edad_minima > 0) {
+      const p = this.auth.profile();
+      if (!p) return `Esta película es para mayores de ${f.edad_minima} años. Iniciá sesión para que verifiquemos tu edad.`;
+      if (edad(p.fecha_nacimiento) < f.edad_minima) return `Esta película es para mayores de ${f.edad_minima} años.`;
+    }
+    return '';
+  });
+
   readonly agotada = computed(
     () => this.seats().length > 0 && !this.seats().some((s) => s.estado === 'libre' || s.estado === 'mia'),
   );

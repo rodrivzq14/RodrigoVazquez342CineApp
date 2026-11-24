@@ -55,6 +55,12 @@ export class CandyService {
     }));
   }
 
+  /** Pausar / activar sin tocar los productos del combo */
+  async setComboActivo(id: number, activo: boolean): Promise<void> {
+    const { error } = await this.supabase.from('combos').update({ activo }).eq('id', id);
+    if (error) throw error;
+  }
+
   /** Igual que con las películas: guarda el combo y reemplaza todos sus productos */
   async guardarCombo(datos: ComboInput, items: { product_id: number; cantidad: number }[], id?: number): Promise<void> {
     let comboId = id;
@@ -71,7 +77,9 @@ export class CandyService {
     const borrar = await this.supabase.from('combo_items').delete().eq('combo_id', comboId);
     if (borrar.error) throw borrar.error;
 
-    const { error } = await this.supabase.from('combo_items').insert(items.map((i) => ({ ...i, combo_id: comboId })));
+    // Solo las columnas de combo_items: si viene algo de más (ej. el nombre) el insert falla
+    const filas = items.map((i) => ({ combo_id: comboId, product_id: i.product_id, cantidad: i.cantidad }));
+    const { error } = await this.supabase.from('combo_items').insert(filas);
     if (error) throw error;
   }
 }

@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { irAlLogin } from './auth-guard';
 import { Role } from '../models/profile';
 
 export const roleGuard = (roles: Role[]): CanMatchFn => async () => {
@@ -10,5 +11,5 @@ export const roleGuard = (roles: Role[]): CanMatchFn => async () => {
 
   const role = auth.role();
   if (role && roles.includes(role)) return true;
-  return router.createUrlTree(auth.isLoggedIn() ? ['/'] : ['/login']);
+  return auth.isLoggedIn() ? router.createUrlTree(['/']) : irAlLogin(router);
 };

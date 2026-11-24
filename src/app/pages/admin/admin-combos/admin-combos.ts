@@ -92,6 +92,7 @@ export class AdminCombos {
 
     if (c) {
       c.items.forEach((i) => items.push(this.nuevoItem(i.product_id, i.cantidad)));
+      if (!c.items.length) items.push(this.nuevoItem()); // siempre al menos una fila para elegir
       this.form.patchValue({ ...c, descripcion: c.descripcion ?? '', imagen_url: c.imagen_url ?? '' });
     } else {
       items.push(this.nuevoItem());
@@ -128,8 +129,7 @@ export class AdminCombos {
 
   async toggleActivo(c: Combo) {
     try {
-      const { id, items, ...datos } = c;
-      await this.candy.guardarCombo({ ...datos, activo: !c.activo }, items, id);
+      await this.candy.setComboActivo(c.id, !c.activo);
       this.combos.update((lista) => lista.map((x) => (x.id === c.id ? { ...x, activo: !c.activo } : x)));
     } catch (e: any) {
       this.error.set(e.message ?? 'No se pudo cambiar el estado');

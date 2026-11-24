@@ -7,7 +7,7 @@
 
   <!-- La propia: formulario o la reseña ya hecha -->
   @if (!auth.isLoggedIn()) {
-    <p class="aviso"><a routerLink="/login">Iniciá sesión</a> para dejar tu reseña.</p>
+    <p class="aviso"><a routerLink="/login" [queryParams]="{ volver: '/pelicula/' + movieId() }">Iniciá sesión</a> para dejar tu reseña.</p>
   } @else if (editando()) {
     <form class="card form" [formGroup]="form" (ngSubmit)="guardar()">
       <p class="label">¿Cuántas estrellas le das?</p>

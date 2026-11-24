@@ -23,7 +23,7 @@ export class ScreeningService {
   async getScreening(id: number): Promise<ScreeningDetail | null> {
   const { data, error } = await this.supabase
     .from('screenings')
-    .select('id, starts_at, formato, idioma, rooms(nombre), movies(id, titulo, edad_minima, fecha_estreno, precio_preventa)')
+    .select('id, starts_at, formato, idioma, estado, rooms(nombre), movies(id, titulo, edad_minima, fecha_estreno, precio_preventa)')
     .eq('id', id)
     .maybeSingle();
 
@@ -34,6 +34,7 @@ export class ScreeningService {
     return {
       id: d.id,
       starts_at: d.starts_at,
+      estado: d.estado,
       formato: d.formato,
       idioma: d.idioma,
       sala: d.rooms?.nombre ?? '',
