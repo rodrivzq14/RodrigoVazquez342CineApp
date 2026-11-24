@@ -64,3 +64,4 @@
 .espera .btn { width: auto; }
 .espera.guardada { border-color: var(--ok); }
 .espera.guardada strong { color: var(--ok); }
+.aviso-preventa { color: var(--accent); font-size: .9rem; margin: .4rem 0; }

@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Html5Qrcode } from 'html5-qrcode';
 import { CandyEntregado, EntradaValidada, TicketService } from '../../services/ticket.service';
 import { FechaArPipe } from '../../pipes/fecha-ar-pipe';
+import { CanjeService } from '../../services/canje.service';
 
 @Component({
   imports: [ReactiveFormsModule, FechaArPipe],
@@ -12,6 +13,7 @@ import { FechaArPipe } from '../../pipes/fecha-ar-pipe';
 })
 export class Validate {
   private tickets = inject(TicketService);
+  private canjes = inject(CanjeService);
   private fb = inject(FormBuilder).nonNullable;
 
   // El mismo QR sirve en la puerta de la sala y en el candy: el empleado elige dónde está
@@ -21,6 +23,7 @@ export class Validate {
   readonly procesando = signal(false);
   readonly valida = signal<EntradaValidada | null>(null);
   readonly candy = signal<CandyEntregado | null>(null);
+  readonly canje = signal<{ nombre: string; puntos: number } | null>(null);
   readonly error = signal('');
 
   private lector: Html5Qrcode | null = null;
@@ -72,12 +75,19 @@ export class Validate {
     this.procesando.set(true);
     this.valida.set(null);
     this.candy.set(null);
+    this.canje.set(null);
     this.error.set('');
     try {
       if (this.modo() === 'sala') {
         this.valida.set(await this.tickets.validar(codigo));
       } else {
-        this.candy.set(await this.tickets.entregarCandy(codigo));
+        try {
+          this.candy.set(await this.tickets.entregarCandy(codigo));
+        } catch (e: any) {
+          // Si no es el código de una entrada, puede ser un canje de puntos
+          if (!e.message?.includes('No existe ninguna entrada')) throw e;
+          this.canje.set(await this.canjes.validar(codigo));
+        }
       }
       this.form.reset();
     } catch (e: any) {
@@ -95,6 +105,7 @@ export class Validate {
   siguiente() {
     this.valida.set(null);
     this.candy.set(null);
+    this.canje.set(null);
     this.error.set('');
     if (this.lector?.isScanning) this.lector.resume();
   }

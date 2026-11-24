@@ -28,6 +28,7 @@ export interface Quote {
   items: QuoteItem[];
   cantidad: number;
   cantidad_vip: number;
+  preventa: boolean; // las entradas generales salen al precio de preventa
 }
 
 export interface OrderTicket {

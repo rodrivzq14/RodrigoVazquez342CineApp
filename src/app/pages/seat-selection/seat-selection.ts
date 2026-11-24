@@ -7,6 +7,7 @@ import { SettingsService } from '../../services/settings.service';
 import { AuthService } from '../../services/auth.service';
 import { EsperaService, MiEspera } from '../../services/espera.service';
 import { FechaArPipe } from '../../pipes/fecha-ar-pipe';
+import { hoyAr } from '../../utils/fechas';
 import { ScreeningDetail } from '../../models/screening';
 import { SeatMapItem, SeatTipo } from '../../models/seat';
 
@@ -34,6 +35,7 @@ export class SeatSelection implements OnInit {
   readonly funcion = signal<ScreeningDetail | null>(null);
   readonly seats = signal<SeatMapItem[]>([]);
   readonly precios = signal({ normal: 0, vip: 0 });
+  readonly preventa = signal(false);
   readonly cargando = signal(true);
   readonly error = signal('');
   readonly aviso = signal('');
@@ -92,7 +94,13 @@ export class SeatSelection implements OnInit {
         return;
       }
       this.funcion.set(funcion);
-      this.precios.set(precios);
+      // En preventa la general sale al precio especial y la VIP mantiene su diferencia (igual que en la base)
+      if (funcion.precio_preventa && funcion.fecha_estreno && hoyAr() < funcion.fecha_estreno) {
+        this.preventa.set(true);
+        this.precios.set({ normal: funcion.precio_preventa, vip: precios.vip - precios.normal + funcion.precio_preventa });
+      } else {
+        this.precios.set(precios);
+      }
 
       await this.auth.ready;
       if (this.auth.isLoggedIn()) await this.actualizarEspera();

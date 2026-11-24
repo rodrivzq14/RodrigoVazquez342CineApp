@@ -80,6 +80,10 @@
 
           <p class="linea"><span>{{ q.cantidad }} entrada(s)</span><span>{{ q.subtotal | currency: 'ARS' : '$' : '1.0-0' }}</span></p>
 
+          @if (q.preventa) {
+            <p class="aviso-preventa">Precio de preventa: vale hasta el día del estreno.</p>
+          }
+
           @if (q.cantidad_vip > 0) {
             <p class="aviso-vip">Incluye {{ q.cantidad_vip }} butaca(s) VIP, con precio superior.</p>
           }

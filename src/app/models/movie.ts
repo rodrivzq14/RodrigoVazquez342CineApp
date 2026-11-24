@@ -11,6 +11,7 @@ export interface Movie {
   poster_url: string;
   edad_minima: number;
   fecha_estreno: string | null;
+  precio_preventa: number | null; // si tiene, la venta abre 7 días antes del estreno a este precio
   activa: boolean;
   generos: Genre[];
 }

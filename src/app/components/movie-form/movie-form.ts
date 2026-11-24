@@ -36,6 +36,7 @@ export class MovieForm {
     poster_url: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
     edad_minima: [0, Validators.required],
     fecha_estreno: [''],
+    precio_preventa: [null as number | null, Validators.min(1)],
     activa: [true],
   });
 
@@ -52,6 +53,7 @@ export class MovieForm {
           poster_url: m.poster_url,
           edad_minima: m.edad_minima,
           fecha_estreno: m.fecha_estreno ?? '',
+          precio_preventa: m.precio_preventa,
           activa: m.activa,
         });
         this.elegidos.set(new Set(m.generos.map((g) => g.id)));
@@ -82,7 +84,8 @@ export class MovieForm {
     try {
       const datos = this.form.getRawValue();
       await this.movieService.guardar(
-        { ...datos, edad_minima: Number(datos.edad_minima), fecha_estreno: datos.fecha_estreno || null },
+        { ...datos, edad_minima: Number(datos.edad_minima), fecha_estreno: datos.fecha_estreno || null,
+          precio_preventa: datos.precio_preventa ? Number(datos.precio_preventa) : null },
         [...this.elegidos()],
         this.movie()?.id,
       );

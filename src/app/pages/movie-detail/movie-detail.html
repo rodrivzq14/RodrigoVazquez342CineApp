@@ -32,6 +32,24 @@
           </p>
         }
         <p class="sinopsis">{{ m.sinopsis }}</p>
+
+        @if (estrenoFuturo(); as estreno) {
+          <div class="estreno">
+            <strong>Se estrena el {{ fechaCorta(estreno) }}</strong>
+            @if (m.precio_preventa) {
+              <span>Preventa a {{ m.precio_preventa | currency: 'ARS' : '$' : '1.0-0' }} la entrada general{{ ventaAbierta() ? ', ¡ya disponible!' : ' desde el ' + fechaCorta(apertura()!) }}</span>
+            } @else if (!ventaAbierta()) {
+              <span>La venta de entradas abre el día del estreno.</span>
+            }
+            @if (auth.isLoggedIn()) {
+              <button type="button" class="btn-chico" (click)="toggleAlerta()">
+                {{ tengoAlerta() ? '🔕 Ya no me avises' : '🔔 Avisame cuando haya entradas' }}
+              </button>
+            } @else {
+              <span><a routerLink="/login">Iniciá sesión</a> para que te avisemos cuando salgan las entradas.</span>
+            }
+          </div>
+        }
       </div>
     </section>
 

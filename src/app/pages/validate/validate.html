@@ -68,6 +68,16 @@
     </section>
   }
 
+  @if (canje(); as c) {
+    <section class="resultado ok">
+      <span class="icono">✔</span>
+      <h2>Entregar</h2>
+      <p class="peli">1 × {{ c.nombre }}</p>
+      <p class="chico">Canje de {{ c.puntos }} puntos · ya quedó marcado como retirado</p>
+      <button type="button" class="btn" (click)="siguiente()">Siguiente</button>
+    </section>
+  }
+
   @if (error() && !procesando()) {
     <section class="resultado mal">
       <span class="icono">✖</span>

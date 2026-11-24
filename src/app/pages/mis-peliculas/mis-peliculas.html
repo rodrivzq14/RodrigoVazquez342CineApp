@@ -1,0 +1,37 @@
+<main class="page">
+  <h1>Mis películas</h1>
+  @if (peliculas().length) {
+    <p class="ayuda">
+      Viste {{ peliculas().length }} {{ peliculas().length === 1 ? 'película' : 'películas' }} con nosotros.
+      @if (sinCalificar()) { Te {{ sinCalificar() === 1 ? 'falta calificar una' : 'faltan calificar ' + sinCalificar() }}. }
+    </p>
+  }
+
+  @if (cargando()) {
+    <p class="estado">Cargando...</p>
+  } @else if (error()) {
+    <div class="error-box">{{ error() }}</div>
+  } @else {
+    <section class="grid">
+      @for (p of peliculas(); track p.movie_id) {
+        <a class="pelicula" [routerLink]="['/pelicula', p.movie_id]">
+          <div class="poster">
+            <img [src]="p.poster_url" [alt]="'Póster de ' + p.titulo" loading="lazy" />
+            @if (p.veces > 1) {
+              <span class="veces">×{{ p.veces }}</span>
+            }
+          </div>
+          <h3>{{ p.titulo }}</h3>
+          <p class="fecha">{{ p.ultima | fechaAr: 'dia' }}</p>
+          @if (p.estrellas) {
+            <app-estrellas [valor]="p.estrellas" />
+          } @else {
+            <span class="calificar">★ Calificar</span>
+          }
+        </a>
+      } @empty {
+        <p class="estado">Todavía no viste ninguna película con nosotros. <a routerLink="/">Mirá la cartelera</a></p>
+      }
+    </section>
+  }
+</main>

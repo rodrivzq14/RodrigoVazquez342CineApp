@@ -37,6 +37,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/confirmation/confirmation').then(m => m.Confirmation),
   },
   {
+    path: 'mis-peliculas',
+    canMatch: [authGuard],
+    loadComponent: () => import('./pages/mis-peliculas/mis-peliculas').then(m => m.MisPeliculas),
+  },
+  {
     path: 'propuestas',
     canMatch: [authGuard],
     loadComponent: () => import('./pages/propuestas/propuestas').then(m => m.Propuestas),

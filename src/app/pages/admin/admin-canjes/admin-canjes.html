@@ -1,0 +1,61 @@
+<h1>Canje de puntos</h1>
+<p class="ayuda">
+  Los clientes suman 1 punto por cada peso que pagan. Acá se elige qué pueden canjear y cuántos puntos cuesta.
+  Una entrada se acredita como crédito; un producto se retira en el candy bar con un código.
+</p>
+
+@if (error()) {
+  <div class="error-box">{{ error() }}</div>
+}
+@if (mensaje()) {
+  <div class="ok-box">{{ mensaje() }}</div>
+}
+
+<div class="tabla-scroll">
+  <table class="tabla">
+    <thead>
+      <tr>
+        <th>Recompensa</th>
+        <th>Puntos</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (r of recompensas(); track r.id) {
+        <tr [class.pausada]="!r.activo">
+          <td>{{ r.tipo === 'entrada' ? '🎟️' : '🍿' }} {{ r.nombre }}</td>
+          <td>
+            <input #pts type="number" min="1" class="puntos" [value]="r.puntos" [attr.aria-label]="'Puntos de ' + r.nombre"
+                   (change)="cambiarPuntos(r, pts.value)" />
+          </td>
+          <td>{{ r.activo ? 'Disponible' : 'Pausada' }}</td>
+          <td><button type="button" class="btn-chico" (click)="toggleActivo(r)">{{ r.activo ? 'Pausar' : 'Activar' }}</button></td>
+        </tr>
+      } @empty {
+        <tr><td colspan="4" class="ayuda">Todavía no hay canjes configurados.</td></tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<form class="card" [formGroup]="form" (ngSubmit)="crear()">
+  <h2>Agregar canje</h2>
+  <div class="fila">
+    <select formControlName="tipo" aria-label="Tipo">
+      <option value="entrada">Entrada general</option>
+      <option value="producto">Producto del candy</option>
+    </select>
+    @if (form.controls.tipo.value === 'producto') {
+      <select formControlName="product_id" aria-label="Producto">
+        <option [ngValue]="0" disabled>Elegí el producto</option>
+        @for (p of productos(); track p.id) {
+          <option [ngValue]="p.id">{{ p.nombre }}</option>
+        }
+      </select>
+    }
+    <input type="number" min="1" formControlName="puntos" aria-label="Puntos" class="puntos" />
+    <span>pts</span>
+    <button type="submit" class="btn-chico">Agregar</button>
+  </div>
+</form>

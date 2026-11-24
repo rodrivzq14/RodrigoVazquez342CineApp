@@ -3,7 +3,10 @@
     <header class="cabecera">
       <h1>Hola, {{ p.nombre }}</h1>
       <p>{{ p.email }}</p>
-      <a routerLink="/propuestas" class="proponer">¿Querés que pasemos una película? Proponela</a>
+      <nav class="atajos">
+        <a routerLink="/mis-peliculas">🎬 Mis películas</a>
+        <a routerLink="/propuestas">¿Querés que pasemos una película? Proponela</a>
+      </nav>
     </header>
 
     <section class="saldos">
@@ -18,6 +21,10 @@
         <small>Se usa al pagar, junto con la tarjeta</small>
       </div>
     </section>
+  }
+
+  @if (auth.profile(); as p) {
+    <app-canjes [puntos]="p.puntos" (canjeado)="auth.refreshProfile()" />
   }
 
   @if (mensaje()) {

@@ -57,6 +57,14 @@
     </label>
   </div>
 
+  @if (form.controls.fecha_estreno.value) {
+    <div class="field">
+      <label for="preventa">Precio de preventa (opcional)</label>
+      <input id="preventa" type="number" min="1" formControlName="precio_preventa" placeholder="Sin preventa" />
+      <small class="ayuda">Si lo cargás, la venta abre 7 días antes del estreno a este precio. Desde el estreno vuelve al precio normal.</small>
+    </div>
+  }
+
   <p class="label">Géneros</p>
   <div class="chips">
     @for (g of generos(); track g.id) {

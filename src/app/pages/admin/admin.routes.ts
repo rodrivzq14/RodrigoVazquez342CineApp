@@ -48,6 +48,11 @@ export const ADMIN_ROUTES: Routes = [
         loadComponent: () => import('./admin-settings/admin-settings').then(m => m.AdminSettings),
       },
       {
+        path: 'canjes',
+        canMatch: [permisoGuard('configuracion')],
+        loadComponent: () => import('./admin-canjes/admin-canjes').then(m => m.AdminCanjes),
+      },
+      {
         path: 'actividad',
         canMatch: [permisoGuard('actividad')],
         loadComponent: () => import('./admin-log/admin-log').then(m => m.AdminLog),

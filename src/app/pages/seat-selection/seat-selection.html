@@ -99,6 +99,9 @@
           </p>
         }
 
+        @if (preventa()) {
+          <p class="aviso-preventa">Precio de preventa, vale hasta el día del estreno.</p>
+        }
         <p class="total">Total <strong>{{ total() | currency: 'ARS' : '$' : '1.0-0' }}</strong></p>
         <button type="button" class="btn" [routerLink]="['/compra', f.id]">Continuar</button>
       }

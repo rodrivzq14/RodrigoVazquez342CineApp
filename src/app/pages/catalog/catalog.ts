@@ -3,6 +3,7 @@ import { MovieService } from '../../services/movie.service';
 import { ReviewService } from '../../services/review.service';
 import { Genre, Movie } from '../../models/movie';
 import { Rating } from '../../models/review';
+import { hoyAr } from '../../utils/fechas';
 import { RouterLink } from '@angular/router';
 import { MovieCard } from '../../components/movie-card/movie-card';
 
@@ -34,12 +35,21 @@ export class Catalog {
 
   readonly filtrando = computed(() => this.texto().trim() !== '' || this.generosElegidos().size > 0);
 
+  // Próximamente: las que todavía no se estrenaron (ordenadas por fecha de estreno)
+  readonly proximas = computed(() =>
+    this.movies()
+      .filter((m) => m.fecha_estreno && m.fecha_estreno > hoyAr())
+      .sort((a, b) => a.fecha_estreno!.localeCompare(b.fecha_estreno!)),
+  );
+
   // Se recalcula sola cuando cambia cualquier signal que usa
   readonly filtradas = computed(() => {
     const texto = sinAcentos(this.texto().trim());
     const elegidos = this.generosElegidos();
 
+    const proximas = new Set(this.proximas().map((m) => m.id));
     return this.movies().filter((m) => {
+      if (proximas.has(m.id)) return false; // van en su propia sección
       const coincideTexto = sinAcentos(m.titulo).includes(texto);
       const coincideGenero =
         elegidos.size === 0 || m.generos.some((g) => elegidos.has(g.id));

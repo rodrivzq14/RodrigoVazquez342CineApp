@@ -16,6 +16,17 @@
     </section>
   }
 
+  @if (proximas().length && !filtrando()) {
+    <section class="top">
+      <h2>Próximamente</h2>
+      <div class="grid">
+        @for (m of proximas(); track m.id) {
+          <app-movie-card [movie]="m" />
+        }
+      </div>
+    </section>
+  }
+
   <section class="filtros">
     <h2>Todas las películas</h2>
     <input #q type="search" placeholder="Buscar por título..."

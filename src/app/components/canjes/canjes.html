@@ -1,0 +1,41 @@
+@if (recompensas().length) {
+  <section class="canjes">
+    <h2>Canjeá tus puntos</h2>
+
+    @if (mensaje()) {
+      <div class="ok-box">{{ mensaje() }}</div>
+    }
+    @if (error()) {
+      <div class="error-box">{{ error() }}</div>
+    }
+
+    <div class="recompensas">
+      @for (r of recompensas(); track r.id) {
+        <article class="recompensa" [class.alcanza]="puntos() >= r.puntos">
+          <span class="icono">{{ r.tipo === 'entrada' ? '🎟️' : '🍿' }}</span>
+          <strong>{{ r.nombre }}</strong>
+          <span class="costo">{{ r.puntos | number: '1.0-0' }} pts</span>
+          <button type="button" class="btn-chico" [disabled]="puntos() < r.puntos || canjeando() === r.id" (click)="canjear(r)">
+            {{ puntos() >= r.puntos ? 'Canjear' : 'Te faltan ' + (r.puntos - puntos()) }}
+          </button>
+        </article>
+      }
+    </div>
+
+    @if (historial().length) {
+      <h3>Mis canjes</h3>
+      <ul class="historial">
+        @for (c of historial(); track c.id) {
+          <li>
+            <span>{{ c.nombre }} · {{ c.puntos }} pts · {{ c.created_at | fechaAr: 'dia' }}</span>
+            @switch (c.estado) {
+              @case ('disponible') { <code>Retirar con {{ c.codigo.slice(0, 8) }}</code> }
+              @case ('usado') { <em>Retirado</em> }
+              @case ('acreditado') { <em>Acreditado como crédito</em> }
+            }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

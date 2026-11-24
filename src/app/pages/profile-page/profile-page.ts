@@ -5,10 +5,11 @@ import { AuthService } from '../../services/auth.service';
 import { OrderService } from '../../services/order.service';
 import { EsperaPerfil, EsperaService } from '../../services/espera.service';
 import { FechaArPipe } from '../../pipes/fecha-ar-pipe';
+import { Canjes } from '../../components/canjes/canjes';
 import { MiCompra } from '../../models/order';
 
 @Component({
-  imports: [RouterLink, CurrencyPipe, DecimalPipe, NgTemplateOutlet, FechaArPipe],
+  imports: [RouterLink, CurrencyPipe, DecimalPipe, NgTemplateOutlet, FechaArPipe, Canjes],
   selector: 'app-profile-page',
   styleUrl: './profile-page.css',
   templateUrl: './profile-page.html',

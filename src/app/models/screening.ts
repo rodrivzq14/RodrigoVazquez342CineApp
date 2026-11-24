@@ -18,6 +18,8 @@ export interface ScreeningDetail {
   formato: string;
   idioma: string;
   sala: string;
+  fecha_estreno: string | null;
+  precio_preventa: number | null;
 }
 
 export interface NuevasFunciones {

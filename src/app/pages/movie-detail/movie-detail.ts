@@ -5,6 +5,8 @@ import { MovieService } from '../../services/movie.service';
 import { ScreeningService } from '../../services/screening.service';
 import { ReviewService } from '../../services/review.service';
 import { AuthService } from '../../services/auth.service';
+import { AlertaService } from '../../services/alerta.service';
+import { aperturaVenta, hoyAr } from '../../utils/fechas';
 import { Estrellas } from '../../components/estrellas/estrellas';
 import { Resenas } from '../../components/resenas/resenas';
 import { Movie } from '../../models/movie';
@@ -30,11 +32,21 @@ export class MovieDetail implements OnInit {
   private screeningService = inject(ScreeningService);
   private reviewService = inject(ReviewService);
   readonly auth = inject(AuthService);
+  private alertas = inject(AlertaService);
 
   readonly id = input.required<string>(); // viene de la URL /pelicula/:id
 
   readonly movie = signal<Movie | null>(null);
   readonly rating = signal<Rating | null>(null);
+  readonly tengoAlerta = signal(false);
+
+  // Estreno / preventa: se calcula con las mismas reglas que la base (apertura_venta)
+  readonly estrenoFuturo = computed(() => {
+    const e = this.movie()?.fecha_estreno;
+    return e && e > hoyAr() ? e : null;
+  });
+  readonly apertura = computed(() => aperturaVenta(this.movie()?.fecha_estreno ?? null, this.movie()?.precio_preventa ?? null));
+  readonly ventaAbierta = computed(() => !this.apertura() || this.apertura()! <= hoyAr());
   readonly funciones = signal<Screening[]>([]);
   readonly cargando = signal(true);
   readonly error = signal('');
@@ -74,11 +86,32 @@ export class MovieDetail implements OnInit {
       this.movie.set(movie);
       this.funciones.set(funciones);
       this.rating.set(rating);
+
+      await this.auth.ready;
+      if (this.auth.isLoggedIn() && this.estrenoFuturo()) {
+        this.tengoAlerta.set((await this.alertas.misAlertas().catch(() => new Set<number>())).has(movieId));
+      }
     } catch {
       this.error.set('No pudimos cargar la película');
     } finally {
       this.cargando.set(false);
     }
+  }
+
+  async toggleAlerta() {
+    const id = this.movie()!.id;
+    if (this.tengoAlerta()) {
+      await this.alertas.desactivar(id);
+      this.tengoAlerta.set(false);
+    } else {
+      await this.alertas.activar(id);
+      this.tengoAlerta.set(true);
+    }
+  }
+
+  /** 2026-11-30 -> 30/11 */
+  fechaCorta(iso: string): string {
+    return iso.slice(8, 10) + '/' + iso.slice(5, 7);
   }
 
   hora(iso: string): string {

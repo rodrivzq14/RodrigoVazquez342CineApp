@@ -7,6 +7,7 @@ export const SECCIONES: { ruta: string; nombre: string; permiso: Permiso }[] = [
   { ruta: 'productos', nombre: 'Candy', permiso: 'candy' },
   { ruta: 'combos', nombre: 'Combos', permiso: 'candy' },
   { ruta: 'configuracion', nombre: 'Precios y cupones', permiso: 'configuracion' },
+  { ruta: 'canjes', nombre: 'Canjes', permiso: 'configuracion' },
   { ruta: 'propuestas', nombre: 'Propuestas', permiso: 'propuestas' },
   { ruta: 'actividad', nombre: 'Actividad', permiso: 'actividad' },
 ];

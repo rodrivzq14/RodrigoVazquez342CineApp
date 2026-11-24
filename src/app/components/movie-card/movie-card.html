@@ -4,6 +4,12 @@
     @if (puesto()) {
       <span class="puesto">#{{ puesto() }}</span>
     }
+    @if (proximamente(); as estreno) {
+      <span class="estreno">Estreno {{ estreno.slice(8, 10) }}/{{ estreno.slice(5, 7) }}</span>
+      @if (movie().precio_preventa) {
+        <span class="preventa">Preventa</span>
+      }
+    }
     @if (movie().edad_minima > 0) {
       <span class="edad">+{{ movie().edad_minima }}</span>
     }

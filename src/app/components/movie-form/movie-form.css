@@ -6,3 +6,4 @@ textarea { resize: vertical; }
 .label { font-size: .85rem; color: var(--muted); margin-bottom: .4rem; }
 .acciones { display: flex; gap: .8rem; margin-top: 1.5rem; }
 @media (max-width: 560px) { .row { grid-template-columns: 1fr; } }
+.ayuda { color: var(--muted); font-size: .8rem; }

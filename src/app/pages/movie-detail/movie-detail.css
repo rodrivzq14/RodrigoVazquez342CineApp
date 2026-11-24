@@ -26,3 +26,6 @@
 .rating span { color: var(--muted); font-size: .9rem; }
 .rating.sin { color: var(--muted); font-size: .9rem; }
 .credito { background: rgba(76, 175, 125, .15); color: #7fdcaa; padding: .6rem .8rem; border-radius: 10px; margin-bottom: 1rem; font-size: .9rem; }
+.estreno { display: flex; flex-direction: column; align-items: flex-start; gap: .4rem; margin-top: 1rem; padding: 1rem; border: 1px solid var(--accent); border-radius: var(--radius); }
+.estreno strong { font-family: var(--font-title); font-size: 1.5rem; font-weight: 400; color: var(--accent); }
+.estreno span { color: var(--muted); font-size: .9rem; }
