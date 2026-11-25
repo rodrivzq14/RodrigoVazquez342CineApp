@@ -4,7 +4,7 @@ import { permisoGuard } from './permiso-guard';
 
 describe('permisoGuard', () => {
   const executeGuard: CanMatchFn = (...guardParameters) =>
-    TestBed.runInInjectionContext(() => permisoGuard(...guardParameters));
+    TestBed.runInInjectionContext(() => permisoGuard('reportes')(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

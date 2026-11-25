@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { MovieForm } from './movie-form';
 
 describe('MovieForm', () => {
@@ -8,9 +9,11 @@ describe('MovieForm', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MovieForm],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MovieForm);
+    fixture.componentRef.setInput('generos', []);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

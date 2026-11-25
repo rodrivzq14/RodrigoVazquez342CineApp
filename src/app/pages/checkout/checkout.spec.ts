@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { Checkout } from './checkout';
 
 describe('Checkout', () => {
@@ -8,9 +9,11 @@ describe('Checkout', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Checkout],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Checkout);
+    fixture.componentRef.setInput('id', '1');
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
