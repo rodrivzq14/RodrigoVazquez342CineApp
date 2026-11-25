@@ -24,7 +24,7 @@ export class AdminCanjes {
   form = this.fb.group({
     tipo: ['entrada' as TipoRecompensa],
     product_id: [0],
-    puntos: [500, [Validators.required, Validators.min(1)]],
+    puntos: [40000, [Validators.required, Validators.min(1)]],
   });
 
   constructor() {
