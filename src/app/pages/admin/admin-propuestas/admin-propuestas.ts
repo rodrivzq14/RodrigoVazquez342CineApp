@@ -46,11 +46,14 @@ export class AdminPropuestas {
     this.procesando.set(p.id);
     this.error.set('');
     try {
-      await this.propuestas.resolver(p.id, 'aceptada');
-      // Lleva al alta de película con los datos que mandó el cliente
+      // Si puede cargar películas, la propuesta se acepta recién cuando guarda la película
+      // (antes se aceptaba acá y si cancelaba el alta quedaba aceptada sin película)
       if (this.auth.puede('peliculas')) {
-        this.router.navigate(['/admin/peliculas'], { queryParams: { titulo: p.titulo, sinopsis: p.descripcion } });
+        this.router.navigate(['/admin/peliculas'], {
+          queryParams: { propuesta: p.id, titulo: p.titulo, sinopsis: p.descripcion },
+        });
       } else {
+        await this.propuestas.resolver(p.id, 'aceptada');
         await this.cargar();
       }
     } catch (e: any) {

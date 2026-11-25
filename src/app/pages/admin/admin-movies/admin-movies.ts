@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { MovieService } from '../../../services/movie.service';
+import { PropuestaService } from '../../../services/propuesta.service';
 import { MovieForm } from '../../../components/movie-form/movie-form';
 import { Genre, Movie } from '../../../models/movie';
 
@@ -13,6 +14,7 @@ import { Genre, Movie } from '../../../models/movie';
 export class AdminMovies implements OnInit {
   private movieService = inject(MovieService);
   private router = inject(Router);
+  private propuestas = inject(PropuestaService);
 
   readonly movies = signal<Movie[]>([]);
   readonly generos = signal<Genre[]>([]);
@@ -24,6 +26,7 @@ export class AdminMovies implements OnInit {
   readonly editando = signal<Movie | null | undefined>(undefined);
 
   // Query params (withComponentInputBinding): vienen de aceptar una propuesta
+  readonly propuesta = input<string>();
   readonly titulo = input<string>();
   readonly sinopsis = input<string>();
   readonly borrador = computed(() => (this.titulo() ? { titulo: this.titulo()!, sinopsis: this.sinopsis() ?? '' } : null));
@@ -63,7 +66,15 @@ export class AdminMovies implements OnInit {
   }
 
   async alGuardar() {
+    const propuesta = this.propuesta(); // se lee antes de cerrar, que limpia la URL
     this.cerrar();
+    if (propuesta) {
+      try {
+        await this.propuestas.resolver(Number(propuesta), 'aceptada');
+      } catch (e: any) {
+        this.error.set(e.message ?? 'La película se guardó pero no se pudo aceptar la propuesta');
+      }
+    }
     await this.cargar();
   }
 
