@@ -6,11 +6,13 @@ import { Propuesta, PropuestaAdmin } from '../models/propuesta';
 export class PropuestaService {
   private supabase = inject(SupabaseService).client;
 
-  /** Las del usuario logueado (la policy solo deja ver las propias) */
+  /** Las del usuario logueado. Hay que filtrar: al admin la policy le deja ver todas */
   async misPropuestas(): Promise<Propuesta[]> {
+    const { data: sesion } = await this.supabase.auth.getUser();
     const { data, error } = await this.supabase
       .from('movie_proposals')
       .select('id, titulo, descripcion, motivo, estado, respuesta, created_at')
+      .eq('user_id', sesion.user?.id ?? '')
       .order('created_at', { ascending: false });
     if (error) throw error;
     return data ?? [];
